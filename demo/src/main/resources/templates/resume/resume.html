@@ -1024,33 +1024,33 @@ body {
                 itemprop="image" />
             </div>
             <div class="name-and-profession text-center">
-              <h3 itemprop="name" th:text="${resume.name}"><b>Richard Hendriks</b></h3>
-              <h5 class="text-muted" itemprop="jobTitle" th:text="${resume.jobTitle}">Programmer</h5>
+              <h3 itemprop="name" th:text="${product.name}"><b>Richard Hendriks</b></h3>
+              <h5 class="text-muted" itemprop="jobTitle" th:text="${product.jobTitle}">Programmer</h5>
             </div>
           </span>
           <hr />
           <div class="contact-details clearfix">
             <div class="detail">
               <span class="icon"><i class="icon fs-lg icon-location"></i></span>
-              <span class="info" th:text="${resume.address}">2712 Broadway St, San Francisco, California, US, CA 94115</span>
+              <span class="info" th:text="${product.address}">2712 Broadway St, San Francisco, California, US, CA 94115</span>
             </div>
             <div class="detail">
               <span class="icon"><i class="icon fs-lg icon-phone"></i></span>
-              <span class="info" itemprop="telephone" th:text="${resume.telephone}">(912) 555-4321</span>
+              <span class="info" itemprop="telephone" th:text="${product.telephone}">(912) 555-4321</span>
             </div>
             <div class="detail">
               <span class="icon"><i class="icon fs-lg icon-mail"></i></span>
               <span class="info"><a class="link-disguise" href="mailto:richard@valley.com"
-                  itemprop="email" th:text="${resume.email}">richard@valley.com</a></span>
+                  itemprop="email" th:text="${product.email}">richard@valley.com</a></span>
             </div>
             <div class="detail">
               <span class="icon"><i class="icon fs-lg icon-link"></i></span>
               <span class="info"><a href=""
-                  target="_blank" th:text="${resume.website}">http://richardhendricks.com</a></span>
+                  target="_blank" th:text="${product.website}">http://richardhendricks.com</a></span>
             </div>
             <div class="detail">
               <span class="icon" title="Languages I speak"><i class="icon fs-lg icon-language"></i></span>
-              <span class="info" th:text="${resume.language}">English</span>
+              <span class="info" th:text="${product.language}">English</span>
             </div>
           </div>
           <hr />
@@ -1067,7 +1067,7 @@ body {
       <section class="col-md-9 card-wrapper pull-right">
         <div class="card background-card">
           <h4 class="text-uppercase">Background</h4>
-          <hr />
+          <hr/>
           <div class="background-details">
             <div class="detail" id="about">
               <div class="icon">
@@ -1077,7 +1077,7 @@ body {
                 <h4 class="title text-uppercase">About</h4>
                 <div class="card card-nested">
                   <div class="content mop-wrapper" itemprop="description">
-                    <p th:text="${resume.about}">Richard hails from Tulsa. He has earned degrees from the University of Oklahoma and Stanford. (Go
+                    <p th:text="${product.about}">Richard hails from Tulsa. He has earned degrees from the University of Oklahoma and Stanford. (Go
                       Sooners and Cardinals!) Before starting Pied Piper, he worked for Hooli as a part time software
                       developer. While his work focuses on applied information theory, mostly optimizing lossless
                       compression schema of both the length-limited and adaptive variants, his non-work interests range
@@ -1153,132 +1153,13 @@ body {
                 </div>
               </div>
             </div>
-            <div class="detail" id="education">
-              <div class="icon"><i class="fs-lg icon-graduation-cap"></i><span class="mobile-title">Education</span>
-              </div>
-              <div class="info">
-                <h4 class="title text-uppercase">Education</h4>
-                <div class="content">
-                  <ul class="list-unstyled clear-margin">
-                    <li class="card card-nested">
-                      <div class="content">
-                        <p class="clear-margin relative"><strong>Information Technology,
-                            Bachelor,&nbsp;</strong>University of Oklahoma</p>
-                        <p class="text-muted"><small>Jun, 2011 - Jan, 2014</small></p><i>4.0</i>
-                        <div class="space-top labels"><span class="label label-keyword">DB1101 - Basic
-                            SQL</span><span class="label label-keyword">CS2011 - Java Introduction</span></div>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-            <div class="detail" id="awards">
-              <div class="icon"><i class="fs-lg icon-trophy"></i><span class="mobile-title">Awards</span></div>
-              <div class="info">
-                <h4 class="title text-uppercase">Awards</h4>
-                <div class="content">
-                  <ul class="list-unstyled clear-margin">
-                    <li class="card card-nested">
-                      <div class="content">
-                        <p class="clear-margin" itemprop="award"><strong>Digital Compression Pioneer Award
-                          </strong>Techcrunch</p>
-                        <p class="text-muted"><small>Awarded on: Nov 01, 2014</small></p>
-                        <div class="mop-wrapper">
-                          <p>There is no spoon.</p>
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-            <div class="detail" id="volunteer-work">
-              <div class="icon"><i class="fs-lg icon-child"></i><span class="mobile-title">Volunteer Work</span>
-              </div>
-              <div class="info">
-                <h4 class="title text-uppercase">Volunteer Work</h4>
-                <div class="content">
-                  <ul class="list-unstyled clear-margin">
-                    <li class="card card-nested">
-                      <div class="content">
-                        <p class="clear-margin relative"><strong>Teacher, </strong><a href="http://coderdojo.com/"
-                            target="_blank">CoderDojo</a></p>
-                        <p class="text-muted"><small>Jan, 2012 - Jan, 2013</small></p>
-                        <div class="mop-wrapper">
-                          <p>Global movement of free coding clubs for young people.</p>
-                        </div>
-                        <ul>
-                          <li class="mop-wrapper">
-                            <p>Awarded 'Teacher of the Month'</p>
-                          </li>
-                        </ul>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-            <div class="detail" id="publications">
-              <div class="icon"><i class="fs-lg icon-newspaper"></i><span class="mobile-title">Publications</span></div>
-              <div class="info">
-                <h4 class="title text-uppercase">Publications</h4>
-                <div class="content">
-                  <ul class="list-unstyled clear-margin">
-                    <li class="card card-nested">
-                      <div class="content">
-                        <p class="clear-margin"><strong><a
-                              href="http://en.wikipedia.org/wiki/Silicon_Valley_(TV_series)" target="_blank">Video
-                              compression for 3d media</a>&nbsp;,&nbsp;</strong>Hooli</p>
-                        <p class="text-muted"><small>Published on: Oct 01, 2014</small></p>
-                        <div class="mop-wrapper">
-                          <p>Innovative middle-out compression algorithm that changes the way we store data.</p>
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-            <div class="detail" id="interests">
-              <div class="icon"><i class="fs-lg icon-heart"></i><span class="mobile-title">Interests</span>
-              </div>
-              <div class="info">
-                <h4 class="title text-uppercase">Interests</h4>
-                <div class="content">
-                  <ul class="list-unstyled clear-margin">
-                    <li class="card card-nested">
-                      <p><strong>Wildlife</strong></p>
-                      <div class="space-top labels"><span class="label label-keyword">Ferrets</span><span
-                          class="label label-keyword">Unicorns</span></div>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-            <div class="detail" id="references">
-              <div class="icon"><i class="fs-lg icon-thumbs-up"></i><span class="mobile-title">References</span>
-              </div>
-              <div class="info">
-                <h4 class="title text-uppercase">References</h4>
-                <div class="content">
-                  <ul class="list-unstyled clear-margin">
-                    <li class="card card-nested">Erlich Bachman<blockquote class="quote">
-                        <div class="mop-wrapper">
-                          <p>It is my pleasure to recommend Richard, his performance working as a consultant for
-                            Main St. Company proved that he will be a valuable addition to any company.</p>
-                        </div>
-                      </blockquote>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </section>
     </div>
   </div>
+
+
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js">
   </script>
