@@ -1,6 +1,8 @@
 package com.example.demo.services;
 
 import com.example.demo.domain.Product;
+
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -11,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@Profile("map")
 public class ProductServiceImpl implements ProductService {
 
     private Map<Integer,Product> products;
