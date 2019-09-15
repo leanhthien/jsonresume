@@ -11,51 +11,54 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
-public class ProductController{
+public class ProductController {
 
-  private ProductService productService;
+    private ProductService productService;
 
-  @Autowired
-  public void setProductService(ProductService productService) {
-    this.productService = productService;
-  }
+    @Autowired
+    public void setProductService(ProductService productService) {
+        this.productService = productService;
+    }
 
-  @RequestMapping("/products")
-  public String listProduct(Model model) {
+    @RequestMapping("/products")
+    public String listProduct(Model model) {
+        model.addAttribute("products", productService.listAllProducts());
+        return "resume/resumes";
+    }
 
-    model.addAttribute("products", productService.listAllProducts());
-    return "resume/resumes";
-  }
+    @RequestMapping("/product/{id}")
+    public String getProduct(@PathVariable Integer id, Model model) {
+        model.addAttribute("product", productService.getProductById(id));
+        return "resume/resume";
+    }
 
-  @RequestMapping("/product/{id}")
-  public String getProduct(@PathVariable Integer id, Model model) {
-
-    model.addAttribute("product", productService.getProductById(id));
-    return "resume/resume";
-  }
-
-  @RequestMapping("/product/new")
-    public String newProduct(Model model){
+    @RequestMapping("/product/new")
+    public String newProduct(Model model) {
         model.addAttribute("product", new Product());
         return "resume/resumeform";
     }
 
-  @RequestMapping("product/edit/{id}")
-  public String edit(@PathVariable Integer id, Model model){
-    model.addAttribute("product", productService.getProductById(id));
-    return "resume/resumeform";
-  }
+    @RequestMapping("product/edit/{id}")
+    public String edit(@PathVariable Integer id, Model model) {
+        model.addAttribute("product", productService.getProductById(id));
+        return "resume/resumeform";
+    }
 
-  @RequestMapping(value = "/product", method = RequestMethod.POST)
-  public String saveOrUpdateProduct(Product product){
-    Product savedProduct = productService.saveOrUpdateProduct(product);
-      return "redirect:/product/" + savedProduct.getId();
-  }
+    @RequestMapping("view/{id}")
+    public String view(@PathVariable Integer id, Model model) {
+        model.addAttribute("product", productService.getProductById(id));
+        return "resume/resume";
+    }
 
-  @RequestMapping("/product/delete/{id}")
-    public String delete(@PathVariable Integer id){
+    @RequestMapping(value = "/product", method = RequestMethod.POST)
+    public String saveOrUpdateProduct(Product product) {
+        Product savedProduct = productService.saveOrUpdateProduct(product);
+        return "redirect:/product/" + savedProduct.getId();
+    }
+
+    @RequestMapping("/product/delete/{id}")
+    public String delete(@PathVariable Integer id) {
         productService.deleteProduct(id);
-
         return "redirect:/products";
     }
 

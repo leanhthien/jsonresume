@@ -1,20 +1,32 @@
 package com.example.demo.controllers;
 
-import com.example.demo.domain.UserDto;
-
+import com.example.demo.domain.User;
+import com.example.demo.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.context.request.WebRequest;
 
 @Controller
-public class UserController{
+public class UserController {
+    private UserService userService;
 
-  @RequestMapping(value = "/registration", method = RequestMethod.GET)
-  public String showRegistrationForm(WebRequest request, Model model) {
-      UserDto userDto = new UserDto();
-      model.addAttribute("user", userDto);
-      return "registration";
-  }
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
+    @RequestMapping("/demo/test")
+    public String listUser(Model model) {
+        model.addAttribute("user", new User());
+        return "registration";
+    }
+
+    @RequestMapping(value = "/demo", method = RequestMethod.POST)
+    public String saveOrUpdateUser(User user) {
+        User savedUser = userService.saveOrUpdateUser(user);
+        return "redirect:/";
+    }
+
 }
