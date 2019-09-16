@@ -1,11 +1,13 @@
 package com.example.demo.services;
 
-import com.example.demo.domain.Product;
+import com.example.demo.entity.Product;
 
+import com.example.demo.repository.ProductRepository;
+import com.example.demo.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -17,6 +19,9 @@ import java.util.Map;
 public class ProductServiceImpl implements ProductService {
 
     private Map<Integer,Product> products;
+
+    @Autowired
+    private ProductRepository productRepository;
 
     public ProductServiceImpl() {
         // loadProducts();
@@ -36,10 +41,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product saveOrUpdateProduct(Product product) {
       if (product != null){
-        if (product.getId() == null){
-            product.setId(getNextKey());
+        if (product.getProductId() == null){
+            product.setProductId(getNextKey());
         }
-        products.put(product.getId(), product);
+//        products.put(product.getProductId(), product);
+        productRepository.save(product);
 
         return product;
       } else {
@@ -47,8 +53,8 @@ public class ProductServiceImpl implements ProductService {
       }
     }
 
-    private Integer getNextKey(){
-      return Collections.max(products.keySet()) + 1;
+    private Long getNextKey(){
+      return Collections.max(products.keySet()) + 1L;
     }
 
     @Override
@@ -60,7 +66,7 @@ public class ProductServiceImpl implements ProductService {
       products = new HashMap<>();
 
       Product product1 = new Product();
-      product1.setId(1);
+      product1.setProductId(1L);
       product1.setName("Albert");
       product1.setJobTitle("Computer Engineer");
       product1.setAddress("Cecilia Chapman 711-2880 Nulla St. Mankato Mississippi 96522");
@@ -73,7 +79,7 @@ public class ProductServiceImpl implements ProductService {
       products.put(1, product1);
 
       Product product2 = new Product();
-      product2.setId(2);
+      product2.setProductId(2L);
       product2.setName("Bob");
       product2.setJobTitle("Architecture");
       product2.setAddress("Cecilia Chapman 711-2880 Nulla St. Mankato Mississippi 96522");
@@ -86,7 +92,7 @@ public class ProductServiceImpl implements ProductService {
       products.put(2, product2);
 
       Product product3 = new Product();
-      product3.setId(3);
+      product3.setProductId(3L);
       product3.setName("Charlie");
       product3.setJobTitle("Doctor");
       product3.setAddress("Cecilia Chapman 711-2880 Nulla St. Mankato Mississippi 96522");
@@ -99,7 +105,7 @@ public class ProductServiceImpl implements ProductService {
       products.put(3, product3);
 
       Product product4 = new Product();
-      product4.setId(4);
+      product4.setProductId(4L);
       product4.setName("Dylan");
       product4.setJobTitle("Singer");
       product4.setAddress("Cecilia Chapman 711-2880 Nulla St. Mankato Mississippi 96522");
@@ -112,7 +118,7 @@ public class ProductServiceImpl implements ProductService {
       products.put(4, product4);
 
       Product product5 = new Product();
-      product5.setId(5);
+      product5.setProductId(5L);
       product5.setName("Eugune");
       product5.setJobTitle("Developer");
       product5.setAddress("Cecilia Chapman 711-2880 Nulla St. Mankato Mississippi 96522");

@@ -1,6 +1,6 @@
 package com.example.demo.controllers;
 
-import com.example.demo.domain.User;
+import com.example.demo.entity.AppUser;
 import com.example.demo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,16 +17,16 @@ public class UserController {
         this.userService = userService;
     }
 
-    @RequestMapping("/demo/test")
+    @RequestMapping("/registration")
     public String listUser(Model model) {
-        model.addAttribute("user", new User());
+        model.addAttribute("user", new AppUser());
         return "registration";
     }
 
-    @RequestMapping(value = "/demo", method = RequestMethod.POST)
-    public String saveOrUpdateUser(User user) {
-        User savedUser = userService.saveOrUpdateUser(user);
-        return "redirect:/";
+    @RequestMapping(value = "/registration", method = RequestMethod.POST)
+    public String saveOrUpdateUser(AppUser user) {
+        AppUser savedUser = userService.saveOrUpdateUser(user);
+        return "redirect:/userInfo";
     }
 
 }

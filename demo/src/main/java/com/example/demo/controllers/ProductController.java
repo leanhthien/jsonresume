@@ -1,6 +1,6 @@
 package com.example.demo.controllers;
 
-import com.example.demo.domain.Product;
+import com.example.demo.entity.Product;
 import com.example.demo.services.ProductService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +53,7 @@ public class ProductController {
     @RequestMapping(value = "/product", method = RequestMethod.POST)
     public String saveOrUpdateProduct(Product product) {
         Product savedProduct = productService.saveOrUpdateProduct(product);
-        return "redirect:/product/" + savedProduct.getId();
+        return "redirect:/product/" + savedProduct.getProductId();
     }
 
     @RequestMapping("/product/delete/{id}")

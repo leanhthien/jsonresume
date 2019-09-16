@@ -1,10 +1,9 @@
 package com.example.demo.repository;
 
-import com.example.demo.entity.AppUser;
+import com.example.demo.entity.AppRole;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserRepository extends JpaRepository<AppUser, Long> {
-
+public interface RoleRepository extends JpaRepository<AppRole, Long> {
 }
