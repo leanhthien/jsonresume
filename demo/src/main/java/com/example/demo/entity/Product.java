@@ -1,13 +1,11 @@
 package com.example.demo.entity;
 
-import java.math.BigDecimal;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@Table( name = "Product")
 public class Product {
 
     @Id
@@ -15,13 +13,46 @@ public class Product {
     private Long productId;
 
     private String name;
+
+    @Column(name = "job_title", length = 64, nullable = false)
     private String jobTitle;
+
     private String address;
     private String telephone;
     private String email;
     private String website;
     private String language;
     private String about;
+    private boolean enabled;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
+    private AppUser appUser;
+
+    public Product(){}
+
+    public Product(Long productId, String name, String jobTitle, Boolean enabled, AppUser appUser) {
+        this.productId = productId;
+        this.name = name;
+        this.jobTitle = jobTitle;
+        this.enabled = enabled;
+        this.appUser = appUser;
+    }
+
+    public Product(Long productId, String name, String jobTitle, String address, String telephone, String email,
+                   String website, String language, String about, boolean enabled) {
+        this.productId = productId;
+        this.name = name;
+        this.jobTitle = jobTitle;
+        this.address = address;
+        this.telephone = telephone;
+        this.email = email;
+        this.website = website;
+        this.language = language;
+        this.about = about;
+        this.enabled = enabled;
+    }
 
     public Long getProductId() {
         return productId;
@@ -95,6 +126,20 @@ public class Product {
         this.about = about;
     }
 
+    public AppUser getAppUser() {
+        return appUser;
+    }
 
+    public void setAppUser(AppUser appUser) {
+        this.appUser = appUser;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 
 }

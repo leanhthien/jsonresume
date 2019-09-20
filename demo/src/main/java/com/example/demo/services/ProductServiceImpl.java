@@ -1,5 +1,7 @@
 package com.example.demo.services;
 
+import com.example.demo.dao.AppUserDAO;
+import com.example.demo.entity.AppUser;
 import com.example.demo.entity.Product;
 
 import com.example.demo.repository.ProductRepository;
@@ -8,11 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.persistence.EntityManager;
+import java.util.*;
 
 @Service
 @Profile("map")
@@ -23,6 +22,15 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private AppUserDAO appUserDAO;
+
+    @Autowired
+    private EntityManager entityManager;
+
     public ProductServiceImpl() {
         // loadProducts();
         loadResumes();
@@ -30,36 +38,73 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> listAllProducts() {
-        return new ArrayList<>(products.values());
+        return new ArrayList<>(productRepository.findAll());
     }
 
     @Override
-    public Product getProductById(Integer id) {
-      return products.get(id);
+    public List<Product> listAllProductsByUser(String username) {
+      AppUser appUser = this.appUserDAO.findUserAccount(username);
+      List<Product> products = productRepository.findByUserId(appUser.getUserId());
+      if (products.isEmpty())
+        return new ArrayList<>();
+      else
+        return products;
+    }
+
+  @Override
+    public Product getProductById(Long id) {
+      Optional<Product> product = productRepository.findById(id);
+      return product.orElse(null);
     }
 
     @Override
-    public Product saveOrUpdateProduct(Product product) {
+    public Product saveOrUpdateProduct(Product product, String username) {
       if (product != null){
-        if (product.getProductId() == null){
-            product.setProductId(getNextKey());
-        }
-//        products.put(product.getProductId(), product);
+//        if (product.getProductId() == null){
+//            product.setProductId(getNextKey());
+//        }
+
+        AppUser appUser = this.appUserDAO.findUserAccount(username);
+        product.setAppUser(appUser);
+        appUser.getProducts().add(product);
+
+        List<Product> products = productRepository.findByUserId(appUser.getUserId());
+        if (products.isEmpty())
+          product.setEnabled(true);
+
         productRepository.save(product);
 
         return product;
+
       } else {
         throw new RuntimeException("Product can't be null");
       }
     }
 
-    private Long getNextKey(){
+    @Override
+    public Product setEnabledProduct(Long productId, String username) {
+
+      AppUser appUser = this.appUserDAO.findUserAccount(username);
+      Product currentProduct = productRepository.findByEnabled(true, appUser.getUserId());
+      if (currentProduct != null) {
+        currentProduct.setEnabled(false);
+        productRepository.save(currentProduct);
+      }
+
+      Product newProduct = productRepository.findById(productId).orElse(null);
+      if (newProduct != null)
+        newProduct.setEnabled(true);
+      productRepository.save(newProduct);
+      return newProduct;
+    }
+
+  private Long getNextKey(){
       return Collections.max(products.keySet()) + 1L;
     }
 
     @Override
-    public void deleteProduct(Integer id) {
-      products.remove(id);
+    public void deleteProduct(Long id) {
+      productRepository.deleteById(id);
     }
 
     private void loadResumes(){

@@ -1,44 +1,56 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Spring Core Online Tutorial - List Products</title>
+    <title>List Products</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
-    <link href="http://cdn.jsdelivr.net/webjars/bootstrap/4.3.1/css/bootstrap.min.css"
-          th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}"
-          rel="stylesheet" media="screen"/>
-
-    <script src="http://cdn.jsdelivr.net/webjars/jquery/3.4.1/jquery.min.js"
-            th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
     <link href="../static/css/spring-core.css"
           th:href="@{css/spring-core.css}" rel="stylesheet" media="screen"/>
 </head>
 <body>
 <div class="container">
+
+    <div class="mt-1" >
+
+    </div>
+
+    <div class="row" th:if="${#lists.isEmpty(products)}">
+        <p>You don't have any resume. Let make new one to start!</p>
+    </div>
     <div th:if="${not #lists.isEmpty(products)}">
-        <h2>Product List</h2>
+        <h2>Your Resume List</h2>
         <table class="table table-striped">
             <tr>
                 <th>Id</th>
                 <th>Name</th>
                 <th>Job Title</th>
+                <th>Top</th>
                 <th colspan="4">Action</th>
             </tr>
             <tr th:each="product : ${products}">
-                <td th:text="${product.id}"></td>
+                <td th:text="${product.productId}"></td>
                 <td th:text="${product.name}"></td>
                 <td th:text="${product.jobTitle}"></td>
-                <td><a th:href="${'/product/' + product.id}">View</a></td>
-                <td><a th:href="${'/product/edit/' + product.id}">Edit</a></td> 
-                <td><a th:href="${'/product/delete/' + product.id}">Delete</a></td> 
+                <td >
+                    <a href="#" th:if="${product.enabled}">
+                        <span class="glyphicon glyphicon-star"></span>
+                    </a>
+                </td>
+                <td><a th:href="${'/product/' + product.productId}">View</a></td>
+                <td><a th:href="${'/product/edit/' + product.productId}">Edit</a></td>
+                <td><a th:if="${not product.enabled}" th:href="${'/product/set_enabled/' + product.productId}">Enable Top</a></td>
+                <td><a th:href="${'/product/delete/' + product.productId}">Delete</a></td>
             
             </tr>
         </table>
     </div>
     <div class="row">
         <div class="col-sm-3">
-            <a href="/product/new">New Resume</a>
+            <a href="/product/new" class="btn">New Resume</a>
         </div>
     </div>
 </div>

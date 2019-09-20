@@ -1,6 +1,8 @@
 package com.example.demo.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table( name = "App_User",
@@ -21,6 +23,22 @@ public class AppUser {
 
     @Column(name = "Enabled", length = 1, nullable = false)
     private boolean enabled;
+
+    @OneToMany(mappedBy="appUser", cascade = CascadeType.ALL)
+    private List<Product> products = new ArrayList<>();
+
+    public AppUser(){}
+
+    public AppUser(String userName){
+        this.userName = userName;
+    }
+
+    public AppUser(Long userId, String userName, String encryptedPassword, boolean enabled){
+        this.userId = userId;
+        this.userName = userName;
+        this.encryptedPassword = encryptedPassword;
+        this.enabled = enabled;
+    }
 
     public Long getUserId() {
         return userId;
@@ -52,6 +70,14 @@ public class AppUser {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 
 }

@@ -26,6 +26,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
+
         AppUser appUser = this.appUserDAO.findUserAccount(userName);
 
         if (appUser == null) {
@@ -33,11 +34,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException("User " + userName + " was not found in the database");
         }
 
-        System.out.println("Found User: " + appUser);
-
         List<String> roleNames = this.appRoleDAO.getRoleNames(appUser.getUserId());
 
-        List<GrantedAuthority> grantList = new ArrayList<GrantedAuthority>();
+        List<GrantedAuthority> grantList = new ArrayList<>();
         if (roleNames != null) {
             for (String role : roleNames) {
                 GrantedAuthority authority = new SimpleGrantedAuthority(role);
@@ -45,10 +44,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             }
         }
 
-        UserDetails userDetails = (UserDetails) new User(appUser.getUserName(),
-                appUser.getEncryptedPassword(), grantList);
-
-        return userDetails;
+        return new User(appUser.getUserName(), appUser.getEncryptedPassword(), grantList);
     }
 
 }

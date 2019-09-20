@@ -36,7 +36,7 @@ import javax.sql.DataSource;
         http.csrf().disable();
         http.authorizeRequests()
                 .antMatchers("/", "/login", "/logout", "/view/**").permitAll()
-                .antMatchers("/userInfo","/product/new").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
+                .antMatchers("/userInfo","/product/new/", "/products/**").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
                 .antMatchers("/admin").access("hasRole('ROLE_ADMIN')")
                 .and().exceptionHandling().accessDeniedPage("/403")
                 .and().formLogin()
@@ -46,7 +46,7 @@ import javax.sql.DataSource;
                 .failureUrl("/login?error=true")
                 .usernameParameter("username")
                 .passwordParameter("password")
-                .and().logout().logoutUrl("/logout").logoutSuccessUrl("/logoutSuccessful")
+                .and().logout().logoutUrl("/logout").logoutSuccessUrl("/")
                 .and().rememberMe().tokenRepository(this.persistentTokenRepository())
                 .tokenValiditySeconds(24 * 60 * 60);
 

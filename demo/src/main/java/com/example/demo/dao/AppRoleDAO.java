@@ -17,7 +17,7 @@ public class AppRoleDAO {
     private EntityManager entityManager;
 
     public List<String> getRoleNames(Long userId) {
-        String sql = "Select ur.appRole.roleName from " + UserRole.class.getName() + " ur " //
+        String sql = "Select ur.appRole.roleName from " + UserRole.class.getName() + " ur "
                 + " where ur.appUser.userId = :userId ";
 
         Query query = this.entityManager.createQuery(sql, String.class);

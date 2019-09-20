@@ -32,7 +32,6 @@ public class MainController {
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String loginPage(Model model) {
 
-//        return "loginPage";
         return "login";
     }
 
@@ -70,7 +69,6 @@ public class MainController {
             String message = "Hi " + principal.getName() //
                     + "<br> You do not have permission to access this page!";
             model.addAttribute("message", message);
-
         }
 
         return "403Page";

@@ -1006,13 +1006,6 @@ body {
         <ul class="list-unstyled">
           <li><a href="#about"><i class="mr-10 icon-board"></i>About</a></li>
           <li><a href="#work-experience"><i class="mr-10 icon-office"></i>Work Experience</a></li>
-          <li><a href="#skills"><i class="mr-10 icon-tools"></i>Skills</a></li>
-          <li><a href="#education"><i class="mr-10 icon-graduation-cap"></i>Education</a></li>
-          <li><a href="#awards"><i class="mr-10 icon-trophy"></i>Awards</a></li>
-          <li><a href="#volunteer-work"><i class="mr-10 icon-child"></i>Volunteer Work</a></li>
-          <li><a href="#publications"><i class="mr-10 icon-newspaper"></i>Publications</a></li>
-          <li><a href="#interests"><i class="mr-10 icon-heart"></i>Interests</a></li>
-          <li><a href="#references"><i class="mr-10 icon-thumbs-up"></i>References</a></li>
         </ul>
       </nav>
       <section class="col-md-3 card-wrapper profile-card-wrapper affix">
@@ -1056,10 +1049,7 @@ body {
           <hr />
           <div class="social-links text-center">
             <div>
-              <a class="fs-2x social-link link-twitter icon-twitter" href="//twitter.com/neutralthoughts"
-                target="_blank" data-toggle="tooltip" title="Richard Hendriks on Twitter"></a>
-              <a class="fs-2x social-link link-soundcloud icon-soundcloud" href="https://soundcloud.com/dandymusicnl"
-                target="_blank" data-toggle="tooltip" title="Richard Hendriks on SoundCloud"></a>
+              <a th:href="${'/product/edit/' + product.productId}" class="btn btn-blue btn-small">Edit</a>
             </div>
           </div>
         </div>
@@ -1121,36 +1111,6 @@ body {
                     </div>
                   </li>
                 </ul>
-              </div>
-            </div>
-            <div class="detail" id="skills">
-              <div class="icon"><i class="fs-lg icon-tools"></i><span class="mobile-title">Skills</span></div>
-              <div class="info">
-                <h4 class="title text-uppercase">Skills</h4>
-                <div class="content">
-                  <ul class="list-unstyled clear-margin">
-                    <li class="card card-nested card-skills">
-                      <div class="skill-level" data-toggle="tooltip" title="Master" data-placement="left">
-                        <div class="skill-progress master"></div>
-                      </div>
-                      <div class="skill-info"><strong>Web Development</strong>
-                        <div class="space-top labels"><span class="label label-keyword">HTML</span><span
-                            class="label label-keyword">CSS</span><span class="label label-keyword">Javascript</span>
-                        </div>
-                      </div>
-                    </li>
-                    <li class="card card-nested card-skills">
-                      <div class="skill-level" data-toggle="tooltip" title="Master" data-placement="left">
-                        <div class="skill-progress master"></div>
-                      </div>
-                      <div class="skill-info"><strong>Compression</strong>
-                        <div class="space-top labels"><span class="label label-keyword">Mpeg</span><span
-                            class="label label-keyword">MP4</span><span class="label label-keyword">GIF</span>
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
               </div>
             </div>
           </div>

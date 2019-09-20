@@ -1,5 +1,6 @@
 package com.example.demo.services;
 
+
 import java.util.List;
 
 import com.example.demo.entity.Product;
@@ -7,9 +8,13 @@ import com.example.demo.entity.Product;
 public interface ProductService {
   List<Product> listAllProducts();
 
-  Product getProductById(Integer id);
+  List<Product> listAllProductsByUser(String username);
 
-  Product saveOrUpdateProduct(Product product);
+  Product getProductById(Long id);
 
-  void deleteProduct(Integer id);
+  Product saveOrUpdateProduct(Product product, String username);
+
+  Product setEnabledProduct(Long productId, String username);
+
+  void deleteProduct(Long id);
 }
