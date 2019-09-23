@@ -342,7 +342,7 @@ public class ProductServiceJdbcImpl implements ProductService {
       conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
       String sql = "DELETE FROM PRODUCT WHERE PRODUCT_ID = ?";
-      System.out.println("Query [DELETE FROM PRODUCT WHERE PRODUCT_ID = "+ id + "]");
+//      System.out.println("Query [DELETE FROM PRODUCT WHERE PRODUCT_ID = "+ id + "]");
       preparedStatement = conn.prepareStatement(sql);
 
       preparedStatement.setLong(1, id);

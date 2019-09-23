@@ -2,6 +2,7 @@ package com.example.demo.rowMapper;
 
 import com.example.demo.entity.AppUser;
 import com.example.demo.entity.Product;
+import com.example.demo.utils.SQLUtils;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
@@ -24,12 +25,9 @@ public class ProductRowMapper implements RowMapper<Product> {
     product.setEnabled(resultSet.getBoolean("enabled"));
     appUser.setUserId(resultSet.getLong("user_id"));
 
-    try {
+    if (SQLUtils.hasColumn(resultSet,"user_name")) {
       String user_name = resultSet.getString("user_name");
       appUser.setUserName(user_name);
-    }
-    catch (SQLException se) {
-      //
     }
 
     product.setAppUser(appUser);
