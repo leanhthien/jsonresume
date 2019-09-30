@@ -65,7 +65,7 @@ public class ProductServiceJdbcTemplateImpl implements ProductService {
       if (product.getProductId() == null) {
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        product.setEnabled(amount != null);
+        product.setEnabled(amount == null);
 
         final String insertSQL =  "INSERT INTO PRODUCT (NAME, JOB_TITLE, ADDRESS, TELEPHONE, EMAIL, WEBSITE, LANGUAGE, ABOUT, ENABLED, USER_ID) " +
                                   "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -138,10 +138,10 @@ public class ProductServiceJdbcTemplateImpl implements ProductService {
   }
 
   @Override
-  public void deleteProduct(Long id) {
+  public String deleteProduct(Long id) {
 
     String sql = "DELETE FROM PRODUCT WHERE PRODUCT_ID = ?";
     jdbcTemplate.update(sql, id);
-
+    return "Success";
   }
 }

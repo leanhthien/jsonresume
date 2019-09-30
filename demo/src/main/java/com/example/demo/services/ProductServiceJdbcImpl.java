@@ -17,6 +17,7 @@ public class ProductServiceJdbcImpl implements ProductService {
   private static final String DB_URL = "jdbc:mysql://localhost:3306/myDb";
   private static final String USER = "root";
   private static final String PASS = "0987654321";
+  private static final int INVALID_ID = -1;
 
   @Override
   public List<Product> listAllProducts() {
@@ -55,12 +56,14 @@ public class ProductServiceJdbcImpl implements ProductService {
 
     } catch(Exception se){
       se.printStackTrace();
+      products = null;
     } finally {
       try {
         if (conn != null)
           conn.close();
       } catch (SQLException se) {
         se.printStackTrace();
+        products = null;
       }
     }
 
@@ -107,12 +110,14 @@ public class ProductServiceJdbcImpl implements ProductService {
 
     } catch(Exception se){
       se.printStackTrace();
+      products = null;
     } finally {
       try {
         if (conn != null)
           conn.close();
       } catch (SQLException se) {
         se.printStackTrace();
+        products = null;
       }
     }
 
@@ -138,6 +143,7 @@ public class ProductServiceJdbcImpl implements ProductService {
 
       ResultSet rs = preparedStatement.executeQuery();
 
+      long user_id  = -1;
       while(rs.next()){
 
         long product_id = rs.getLong("product_id");
@@ -150,21 +156,40 @@ public class ProductServiceJdbcImpl implements ProductService {
         String language = rs.getString("language");
         String about = rs.getString("about");
         boolean enabled = rs.getBoolean("enabled");
+        user_id = rs.getLong("user_id");
 
         product = new Product(product_id, name, job_title, address, telephone, email, website, language, about, enabled);
 
       }
+
+      if (user_id != INVALID_ID) {
+        sql =  "SELECT USER_NAME " +
+                "FROM APP_USER " +
+                "WHERE USER_ID = ?";
+        preparedStatement = conn.prepareStatement(sql);
+
+        preparedStatement.setLong(1, user_id);
+
+        rs = preparedStatement.executeQuery();
+
+        while(rs.next()){
+          product.setAppUser(new AppUser(user_id, rs.getString("user_name")));
+        }
+      }
+
       rs.close();
       preparedStatement.close();
 
     } catch(Exception se){
       se.printStackTrace();
+      product = null;
     } finally {
       try {
         if (conn != null)
           conn.close();
       } catch (SQLException se) {
         se.printStackTrace();
+        product = null;
       }
     }
 
@@ -205,21 +230,44 @@ public class ProductServiceJdbcImpl implements ProductService {
 
       rs = preparedStatement.executeQuery();
 
-      int count  = 0;
+      int amountAllUserProduct  = 0;
+      int amountProductById = 0;
+
       while(rs.next()){
-        count = rs.getInt(1);
+        amountAllUserProduct = rs.getInt(1);
       }
 
+      String saveSQL =  "INSERT INTO PRODUCT (NAME, JOB_TITLE, ADDRESS, TELEPHONE, EMAIL, WEBSITE, LANGUAGE, ABOUT, ENABLED, USER_ID) " +
+                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+      String saveWithIdSQL =  "INSERT INTO PRODUCT (NAME, JOB_TITLE, ADDRESS, TELEPHONE, EMAIL, WEBSITE, LANGUAGE, ABOUT, ENABLED, USER_ID, PRODUCT_ID) " +
+                              "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+      String updateSQL =  "UPDATE PRODUCT SET " +
+                          "NAME = ?, JOB_TITLE = ?, ADDRESS = ?, TELEPHONE = ?, EMAIL = ?, WEBSITE = ?, LANGUAGE = ?, ABOUT = ? " +
+                          "WHERE PRODUCT_ID = ?";
+
+
       if (product.getProductId() == null) {
-        String saveSQL =  "INSERT INTO PRODUCT (NAME, JOB_TITLE, ADDRESS, TELEPHONE, EMAIL, WEBSITE, LANGUAGE, ABOUT, ENABLED, USER_ID) " +
-                          "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         preparedStatement = conn.prepareStatement(saveSQL, Statement.RETURN_GENERATED_KEYS);
       }
       else {
-        String updateSQL =  "UPDATE PRODUCT SET " +
-                            "NAME = ?, JOB_TITLE = ?, ADDRESS = ?, TELEPHONE = ?, EMAIL = ?, WEBSITE = ?, LANGUAGE = ?, ABOUT = ? " +
-                            "WHERE PRODUCT_ID = ?";
-        preparedStatement = conn.prepareStatement(updateSQL);
+        String getProductSQL =  "SELECT COUNT(PRODUCT.PRODUCT_ID) " +
+                                "FROM PRODUCT " +
+                                "WHERE PRODUCT_ID = ?";
+
+        preparedStatement = conn.prepareStatement(getProductSQL);
+
+        preparedStatement.setLong(1, product.getProductId());
+
+        rs = preparedStatement.executeQuery();
+
+        while(rs.next()){
+          amountProductById = rs.getInt(1);
+        }
+
+        preparedStatement = (amountProductById == 0) ? conn.prepareStatement(saveWithIdSQL) : conn.prepareStatement(updateSQL);
+
       }
 
       preparedStatement.setString(1, product.getName());
@@ -231,35 +279,46 @@ public class ProductServiceJdbcImpl implements ProductService {
       preparedStatement.setString(7, product.getLanguage());
       preparedStatement.setString(8, product.getAbout());
 
+      int effectedRow;
       if (product.getProductId() == null) {
-        preparedStatement.setBoolean(9, count == 0);
+        preparedStatement.setBoolean(9, amountAllUserProduct == 0);
         preparedStatement.setLong(10, user_id);
+
+        effectedRow = preparedStatement.executeUpdate();
+
+        try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+          if (generatedKeys.next()) {
+            product.setProductId(generatedKeys.getLong(1));
+          }
+          else {
+            throw new SQLException("Creating product failed, no ID obtained.");
+          }
+        }
+      }
+      else if (amountProductById == 0) {
+        preparedStatement.setBoolean(9, product.isEnabled());
+        preparedStatement.setLong(10, product.getAppUser().getUserId());
+        preparedStatement.setLong(11, product.getProductId());
+        effectedRow = preparedStatement.executeUpdate();
       }
       else {
         preparedStatement.setLong(9, product.getProductId());
+        effectedRow = preparedStatement.executeUpdate();
       }
 
-      preparedStatement.executeUpdate();
-
-      try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
-        if (generatedKeys.next()) {
-          product.setProductId(generatedKeys.getLong(1));
-        }
-        else {
-          throw new SQLException("Creating product failed, no ID obtained.");
-        }
-      }
       rs.close();
       preparedStatement.close();
 
     } catch(Exception se){
       se.printStackTrace();
+      product = null;
     } finally {
       try {
         if (conn != null)
           conn.close();
       } catch (SQLException se) {
         se.printStackTrace();
+        product = null;
       }
     }
 
@@ -277,6 +336,8 @@ public class ProductServiceJdbcImpl implements ProductService {
       Class.forName(JDBC_DRIVER);
 
       conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+      conn.setAutoCommit(false);
 
       String sql ="SELECT USER_ID " +
                   "FROM APP_USER " +
@@ -313,17 +374,31 @@ public class ProductServiceJdbcImpl implements ProductService {
 
       preparedStatement.executeUpdate();
 
+      conn.commit();
+
       rs.close();
       preparedStatement.close();
 
+    } catch(SQLException se){
+      se.printStackTrace();
+      System.out.println("Rolling back data....");
+      try{
+        if(conn != null)
+          conn.rollback();
+      } catch(SQLException rollbackSe){
+        rollbackSe.printStackTrace();
+      }
+      product = null;
     } catch(Exception se){
       se.printStackTrace();
+      product = null;
     } finally {
       try {
         if (conn != null)
           conn.close();
       } catch (SQLException se) {
         se.printStackTrace();
+        product = null;
       }
     }
 
@@ -331,10 +406,10 @@ public class ProductServiceJdbcImpl implements ProductService {
   }
 
   @Override
-  public void deleteProduct(Long id){
+  public String deleteProduct(Long id){
     Connection conn = null;
     PreparedStatement preparedStatement;
-
+    String status;
     try {
 
       Class.forName(JDBC_DRIVER);
@@ -342,7 +417,7 @@ public class ProductServiceJdbcImpl implements ProductService {
       conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
       String sql = "DELETE FROM PRODUCT WHERE PRODUCT_ID = ?";
-//      System.out.println("Query [DELETE FROM PRODUCT WHERE PRODUCT_ID = "+ id + "]");
+
       preparedStatement = conn.prepareStatement(sql);
 
       preparedStatement.setLong(1, id);
@@ -350,17 +425,20 @@ public class ProductServiceJdbcImpl implements ProductService {
       preparedStatement.executeUpdate();
 
       preparedStatement.close();
-
+      status = "Success";
     } catch(Exception se){
       se.printStackTrace();
+      status = "Fail";
     } finally {
       try {
         if (conn != null)
           conn.close();
       } catch (SQLException se) {
         se.printStackTrace();
+        status = "Fail";
       }
     }
+    return status;
   }
 
 }

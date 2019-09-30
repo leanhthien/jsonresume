@@ -8,5 +8,4 @@ public interface UserService {
 
     AppUser saveOrUpdateUser(AppUser user);
 
-
 }

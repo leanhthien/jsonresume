@@ -5,6 +5,7 @@ values ('dbadmin1', '$2a$10$PrI5Gk9L.tSZiW9FXhTS8O8Mz9E97k2FZbFvGFFaSsiTUIl.TCrF
 
 insert into APP_USER (USER_NAME, ENCRYPTED_PASSWORD, ENABLED)
 values ('dbuser1', '$2a$10$PrI5Gk9L.tSZiW9FXhTS8O8Mz9E97k2FZbFvGFFaSsiTUIl.TCrFu', 1);
+
 ---
 
 insert into APP_ROLE (ROLE_ID, ROLE_NAME)

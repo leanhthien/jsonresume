@@ -8,6 +8,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.security.Principal;
+
 @Controller
 public class UserController {
     private UserService userService;
@@ -18,9 +20,14 @@ public class UserController {
     }
 
     @RequestMapping("/registration")
-    public String listUser(Model model) {
-        model.addAttribute("user", new AppUser());
-        return "registration";
+    public String listUser(Model model, Principal principal) {
+        if (principal != null && principal.getName() != null) {
+            return "redirect:/";
+        }
+        else {
+            model.addAttribute("user", new AppUser());
+            return "registration";
+        }
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)

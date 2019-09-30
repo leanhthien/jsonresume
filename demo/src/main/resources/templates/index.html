@@ -1,6 +1,6 @@
 
 <!doctype html> 
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
   <head> 
     <script src="https://jsonresume.org/cdn-cgi/apps/head/QEWNwoPSl2O5LqMXvi595gsiMPg.js"></script>
     <link rel="dns-prefetch" href="//fonts.googleapis.com" /> 
@@ -45,10 +45,12 @@
               <div class="col-sm-12"> 
                 <a href="/">JSON Resume</a> 
                 <div class="float-right hidden-xs">
-                  <a href="/registration/">Sign up</a>
-                  <a href="/login">Sign in</a>
+                  <a th:if="${#request.userPrincipal == null}" href="/registration/">Sign up</a>
+                  <a th:if="${#request.userPrincipal == null}" href="/login">Sign in</a>
                   <a href="/products/all">Themes</a>
                   <a href="/product/new/">Create resume</a>
+                  <a href="/products/user" th:if="${#request?.userPrincipal?.name != '' && #request?.userPrincipal?.name != null}" th:text="${#request?.userPrincipal?.name}"></a>
+                  <a href="/logout/" th:if="${#request?.userPrincipal?.name != '' && #request?.userPrincipal?.name != null}" >Log out</a>
                 </div> 
               </div> 
             </div> 
@@ -67,7 +69,7 @@
         <div id="start"> 
           <div class="container"> 
             <div class="row"> 
-              <div class="feature col-sm-4"> 
+              <div class="feature col-sm-4">
                 <h2>New to this?</h2> 
                 <p>Create new account to see and create resume</p> 
                 <a href="/registration/" class="btn">Get started</a> 

@@ -16,5 +16,5 @@ public interface ProductService {
 
   Product setEnabledProduct(Long productId, String username);
 
-  void deleteProduct(Long id);
+  String deleteProduct(Long id);
 }

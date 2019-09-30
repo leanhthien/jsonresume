@@ -1,5 +1,12 @@
-
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>Richard Hendriks</title><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/><style>@font-face {
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Richard Hendriks</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
+    <style>@font-face {
   font-family: 'icomoon';
   src:  url('fonts/icomoon.eot?z1lat9');
   src:  url('fonts/icomoon.eot?z1lat9#iefix') format('embedded-opentype'),
@@ -992,138 +999,156 @@ body {
     page-break-before: always;
   }
 }
-</style>
+
+
+    </style>
 </head>
 
 <body itemscope="itemscope" itemtype="http://schema.org/Person">
-  <div class="container-fluid">
+<div class="container-fluid">
+
+    <div>
+        <th:block th:include="/_navForVer3"></th:block>
+    </div>
+
     <div class="row main clearfix">
-      <a class="js-floating-nav-trigger floating-nav-trigger" href="#">
-        <i class="icon-bars"></i>
-        <span class="close-icon">&times;</span>
-      </a>
-      <nav class="floating-nav js-floating-nav">
-        <ul class="list-unstyled">
-          <li><a href="#about"><i class="mr-10 icon-board"></i>About</a></li>
-          <li><a href="#work-experience"><i class="mr-10 icon-office"></i>Work Experience</a></li>
-        </ul>
-      </nav>
-      <section class="col-md-3 card-wrapper profile-card-wrapper affix">
-        <div class="card profile-card">
+        <a class="js-floating-nav-trigger floating-nav-trigger" href="#">
+            <i class="icon-bars"></i>
+            <span class="close-icon">&times;</span>
+        </a>
+        <nav class="floating-nav js-floating-nav">
+            <ul class="list-unstyled">
+                <li><a href="#about"><i class="mr-10 icon-board"></i>About</a></li>
+                <li><a href="#work-experience"><i class="mr-10 icon-office"></i>Work Experience</a></li>
+            </ul>
+        </nav>
+        <section class="col-md-3 card-wrapper profile-card-wrapper affix">
+            <div class="card profile-card">
           <span class="profile-pic-container">
             <div class="profile-pic">
               <img class="media-object img-circle center-block" data-src="holder.js/100x100" alt="Richard Hendriks"
-                src="https://s.gravatar.com/avatar/7e6be1e623fb85adde3462fa8587caf2?s=100&amp;r=pg&amp;d=mm"
-                itemprop="image" />
+                   src="https://s.gravatar.com/avatar/7e6be1e623fb85adde3462fa8587caf2?s=100&amp;r=pg&amp;d=mm"
+                   itemprop="image"/>
             </div>
             <div class="name-and-profession text-center">
               <h3 itemprop="name" th:text="${product.name}"><b>Richard Hendriks</b></h3>
               <h5 class="text-muted" itemprop="jobTitle" th:text="${product.jobTitle}">Programmer</h5>
             </div>
           </span>
-          <hr />
-          <div class="contact-details clearfix">
-            <div class="detail">
-              <span class="icon"><i class="icon fs-lg icon-location"></i></span>
-              <span class="info" th:text="${product.address}">2712 Broadway St, San Francisco, California, US, CA 94115</span>
-            </div>
-            <div class="detail">
-              <span class="icon"><i class="icon fs-lg icon-phone"></i></span>
-              <span class="info" itemprop="telephone" th:text="${product.telephone}">(912) 555-4321</span>
-            </div>
-            <div class="detail">
-              <span class="icon"><i class="icon fs-lg icon-mail"></i></span>
-              <span class="info"><a class="link-disguise" href="mailto:richard@valley.com"
-                  itemprop="email" th:text="${product.email}">richard@valley.com</a></span>
-            </div>
-            <div class="detail">
-              <span class="icon"><i class="icon fs-lg icon-link"></i></span>
-              <span class="info"><a href=""
-                  target="_blank" th:text="${product.website}">http://richardhendricks.com</a></span>
-            </div>
-            <div class="detail">
-              <span class="icon" title="Languages I speak"><i class="icon fs-lg icon-language"></i></span>
-              <span class="info" th:text="${product.language}">English</span>
-            </div>
-          </div>
-          <hr />
-          <div class="social-links text-center">
-            <div>
-              <a th:href="${'/product/edit/' + product.productId}" class="btn btn-blue btn-small">Edit</a>
-            </div>
-          </div>
-        </div>
-      </section>
-      <section class="col-md-9 card-wrapper pull-right">
-        <div class="card background-card">
-          <h4 class="text-uppercase">Background</h4>
-          <hr/>
-          <div class="background-details">
-            <div class="detail" id="about">
-              <div class="icon">
-                <i class="fs-lg icon-board"></i><span class="mobile-title">About</span>
-              </div>
-              <div class="info">
-                <h4 class="title text-uppercase">About</h4>
-                <div class="card card-nested">
-                  <div class="content mop-wrapper" itemprop="description">
-                    <p th:text="${product.about}">Richard hails from Tulsa. He has earned degrees from the University of Oklahoma and Stanford. (Go
-                      Sooners and Cardinals!) Before starting Pied Piper, he worked for Hooli as a part time software
-                      developer. While his work focuses on applied information theory, mostly optimizing lossless
-                      compression schema of both the length-limited and adaptive variants, his non-work interests range
-                      widely, everything from quantum computing to chaos theory. He could tell you about it, but THAT
-                      would NOT be a “length-limited” conversation!</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="detail" id="work-experience">
-              <div class="icon">
-                <i class="fs-lg icon-office"></i>
-                <span class="mobile-title">Work Experience</span>
-              </div>
-              <div class="info">
-                <h4 class="title text-uppercase">Work Experience</h4>
-                <ul class="list-unstyled clear-margin">
-                  <li class="card card-nested clearfix">
-                    <div class="content">
-                      <p class="clear-margin relative"><strong>CEO/President</strong>,&nbsp;<a
-                          href="http://piedpiper.com" target="_blank">Pied Piper</a></p>
-                      <p class="text-muted"><small><span class="space-right">Dec, 2013 - Dec, 2014</span><span><i
-                              class="icon-clock mr-5"></i>1 year</span></small></p>
-                      <div class="mop-wrapper space-bottom">
-                        <p>Pied Piper is a multi-platform technology based on a proprietary universal compression
-                          algorithm that has consistently fielded high Weisman Scores™ that are not merely competitive,
-                          but approach the theoretical limit of lossless compression.</p>
-                      </div>
-                      <ul>
-                        <li class="mop-wrapper">
-                          <p>Build an algorithm for artist to detect if their music was violating copy right
-                            infringement laws</p>
-                        </li>
-                        <li class="mop-wrapper">
-                          <p>Successfully won Techcrunch Disrupt</p>
-                        </li>
-                        <li class="mop-wrapper">
-                          <p>Optimized an algorithm that holds the current world record for Weisman Scores</p>
-                        </li>
-                      </ul>
+                <hr/>
+                <div class="contact-details clearfix">
+                    <div class="detail">
+                        <span class="icon"><i class="icon fs-lg icon-location"></i></span>
+                        <span class="info" th:text="${product.address}">2712 Broadway St, San Francisco, California, US, CA 94115</span>
                     </div>
-                  </li>
-                </ul>
-              </div>
+                    <div class="detail">
+                        <span class="icon"><i class="icon fs-lg icon-phone"></i></span>
+                        <span class="info" itemprop="telephone" th:text="${product.telephone}">(912) 555-4321</span>
+                    </div>
+                    <div class="detail">
+                        <span class="icon"><i class="icon fs-lg icon-mail"></i></span>
+                        <span class="info"><a class="link-disguise" href="mailto:richard@valley.com"
+                                              itemprop="email" th:text="${product.email}">richard@valley.com</a></span>
+                    </div>
+                    <div class="detail">
+                        <span class="icon"><i class="icon fs-lg icon-link"></i></span>
+                        <span class="info"><a href=""
+                                              target="_blank"
+                                              th:text="${product.website}">http://richardhendricks.com</a></span>
+                    </div>
+                    <div class="detail">
+                        <span class="icon" title="Languages I speak"><i class="icon fs-lg icon-language"></i></span>
+                        <span class="info" th:text="${product.language}">English</span>
+                    </div>
+                </div>
+                <hr/>
+                <div class="social-links text-center" th:if="${isEditable}">
+                    <div>
+                        <a th:href="${'/product/edit/' + product.productId}" class="btn btn-info" role="button">Edit</a>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-      </section>
+        </section>
+        <section class="col-md-9 card-wrapper pull-right">
+            <div class="card background-card">
+                <h4 class="text-uppercase">Background</h4>
+                <hr/>
+                <div class="background-details">
+                    <div class="detail" id="about">
+                        <div class="icon">
+                            <i class="fs-lg icon-board"></i><span class="mobile-title">About</span>
+                        </div>
+                        <div class="info">
+                            <h4 class="title text-uppercase">About</h4>
+                            <div class="card card-nested">
+                                <div class="content mop-wrapper" itemprop="description">
+                                    <p th:text="${product.about}">Richard hails from Tulsa. He has earned degrees from
+                                        the University of Oklahoma and Stanford. (Go
+                                        Sooners and Cardinals!) Before starting Pied Piper, he worked for Hooli as a
+                                        part time software
+                                        developer. While his work focuses on applied information theory, mostly
+                                        optimizing lossless
+                                        compression schema of both the length-limited and adaptive variants, his
+                                        non-work interests range
+                                        widely, everything from quantum computing to chaos theory. He could tell you
+                                        about it, but THAT
+                                        would NOT be a “length-limited” conversation!</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="detail" id="work-experience">
+                        <div class="icon">
+                            <i class="fs-lg icon-office"></i>
+                            <span class="mobile-title">Work Experience</span>
+                        </div>
+                        <div class="info">
+                            <h4 class="title text-uppercase">Work Experience</h4>
+                            <ul class="list-unstyled clear-margin">
+                                <li class="card card-nested clearfix">
+                                    <div class="content">
+                                        <p class="clear-margin relative"><strong>CEO/President</strong>,&nbsp;<a
+                                                href="http://piedpiper.com" target="_blank">Pied Piper</a></p>
+                                        <p class="text-muted"><small><span
+                                                class="space-right">Dec, 2013 - Dec, 2014</span><span><i
+                                                class="icon-clock mr-5"></i>1 year</span></small></p>
+                                        <div class="mop-wrapper space-bottom">
+                                            <p>Pied Piper is a multi-platform technology based on a proprietary
+                                                universal compression
+                                                algorithm that has consistently fielded high Weisman Scores™ that are
+                                                not merely competitive,
+                                                but approach the theoretical limit of lossless compression.</p>
+                                        </div>
+                                        <ul>
+                                            <li class="mop-wrapper">
+                                                <p>Build an algorithm for artist to detect if their music was violating
+                                                    copy right
+                                                    infringement laws</p>
+                                            </li>
+                                            <li class="mop-wrapper">
+                                                <p>Successfully won Techcrunch Disrupt</p>
+                                            </li>
+                                            <li class="mop-wrapper">
+                                                <p>Optimized an algorithm that holds the current world record for
+                                                    Weisman Scores</p>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
-  </div>
+</div>
 
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js">
-  </script>
-  <script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js">
+</script>
+<script>
     $(function () {
       var toggleFloatingMenu = function () {
         $('.js-floating-nav').toggleClass('is-visible');
@@ -1150,8 +1175,10 @@ body {
           .addClass('icon-chevron-down');
       });
     });
-  </script>
-  <script>
+
+
+</script>
+<script>
     WebFontConfig = {
       google: {
         families: ['Lato:300,400,700:latin']
@@ -1166,7 +1193,9 @@ body {
       var s = document.getElementsByTagName('script')[0];
       s.parentNode.insertBefore(wf, s);
     })();
-  </script>
+
+
+</script>
 </body>
 
 </html>

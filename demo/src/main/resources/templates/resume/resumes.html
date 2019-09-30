@@ -4,18 +4,39 @@
     <title>List Products</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/v4-shims.css">
 
     <link href="../static/css/spring-core.css"
           th:href="@{css/spring-core.css}" rel="stylesheet" media="screen"/>
 </head>
 <body>
+
 <div class="container">
 
-    <div class="mt-1" >
+    <div>
+        <th:block th:include="/_nav"></th:block>
+    </div>
 
+    <div>
+        <span class="profile-pic-container">
+            <div class="profile-pic">
+              <img class="media-object img-circle center-block" data-src="holder.js/100x100" alt="Richard Hendriks"
+                   src="https://s.gravatar.com/avatar/7e6be1e623fb85adde3462fa8587caf2?s=100&amp;r=pg&amp;d=mm"
+                   itemprop="image"/>
+            </div>
+            <div class="name-and-profession">
+              <h3><span th:utext="${#request.userPrincipal.name}"></span></h3>
+            </div>
+        </span>
+    </div>
+
+    <div class="alert alert-danger" role="alert" th:if="${error != null && error != ''}">
+        Something went wrong!
     </div>
 
     <div class="row" th:if="${#lists.isEmpty(products)}">
@@ -37,7 +58,7 @@
                 <td th:text="${product.jobTitle}"></td>
                 <td >
                     <a href="#" th:if="${product.enabled}">
-                        <span class="glyphicon glyphicon-star"></span>
+                        <i class="fas fa-star"></i>
                     </a>
                 </td>
                 <td><a th:href="${'/product/' + product.productId}">View</a></td>
@@ -49,8 +70,8 @@
         </table>
     </div>
     <div class="row">
-        <div class="col-sm-3">
-            <a href="/product/new" class="btn">New Resume</a>
+        <div class="text-center">
+            <a href="/product/new" class="btn btn-info" role="button">New Resume</a>
         </div>
     </div>
 </div>
