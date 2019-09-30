@@ -105,6 +105,7 @@ public class ProductServiceJdbcImpl implements ProductService {
 
         products.add( new Product(product_id, name, job_title, enabled, user));
       }
+
       rs.close();
       preparedStatement.close();
 
@@ -128,7 +129,7 @@ public class ProductServiceJdbcImpl implements ProductService {
   public Product getProductById(Long id){
     Connection conn = null;
     PreparedStatement preparedStatement;
-    Product product = new Product();
+    Product product  = null;
 
     try {
 
@@ -137,14 +138,14 @@ public class ProductServiceJdbcImpl implements ProductService {
       conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
       String sql = "SELECT * FROM PRODUCT WHERE PRODUCT_ID = ?";
+
       preparedStatement = conn.prepareStatement(sql);
 
       preparedStatement.setLong(1, id);
 
       ResultSet rs = preparedStatement.executeQuery();
 
-      long user_id  = -1;
-      while(rs.next()){
+      if (!isResultSetEmpty(rs) && rs.next()) {
 
         long product_id = rs.getLong("product_id");
         String name = rs.getString("name");
@@ -156,14 +157,11 @@ public class ProductServiceJdbcImpl implements ProductService {
         String language = rs.getString("language");
         String about = rs.getString("about");
         boolean enabled = rs.getBoolean("enabled");
-        user_id = rs.getLong("user_id");
+        long user_id = rs.getLong("user_id");
 
         product = new Product(product_id, name, job_title, address, telephone, email, website, language, about, enabled);
 
-      }
-
-      if (user_id != INVALID_ID) {
-        sql =  "SELECT USER_NAME " +
+        sql =   "SELECT USER_NAME " +
                 "FROM APP_USER " +
                 "WHERE USER_ID = ?";
         preparedStatement = conn.prepareStatement(sql);
@@ -172,8 +170,8 @@ public class ProductServiceJdbcImpl implements ProductService {
 
         rs = preparedStatement.executeQuery();
 
-        while(rs.next()){
-          product.setAppUser(new AppUser(user_id, rs.getString("user_name")));
+        if (!isResultSetEmpty(rs) && rs.next()) {
+            product.setAppUser(new AppUser(user_id, rs.getString("user_name")));
         }
       }
 
@@ -246,7 +244,6 @@ public class ProductServiceJdbcImpl implements ProductService {
       String updateSQL =  "UPDATE PRODUCT SET " +
                           "NAME = ?, JOB_TITLE = ?, ADDRESS = ?, TELEPHONE = ?, EMAIL = ?, WEBSITE = ?, LANGUAGE = ?, ABOUT = ? " +
                           "WHERE PRODUCT_ID = ?";
-
 
       if (product.getProductId() == null) {
         preparedStatement = conn.prepareStatement(saveSQL, Statement.RETURN_GENERATED_KEYS);
@@ -409,7 +406,7 @@ public class ProductServiceJdbcImpl implements ProductService {
   public String deleteProduct(Long id){
     Connection conn = null;
     PreparedStatement preparedStatement;
-    String status;
+    String status = "Fail";
     try {
 
       Class.forName(JDBC_DRIVER);
@@ -422,10 +419,13 @@ public class ProductServiceJdbcImpl implements ProductService {
 
       preparedStatement.setLong(1, id);
 
-      preparedStatement.executeUpdate();
+      int effectedRow = preparedStatement.executeUpdate();
+
+      if(effectedRow != 0)
+        status = "Success";
 
       preparedStatement.close();
-      status = "Success";
+
     } catch(Exception se){
       se.printStackTrace();
       status = "Fail";
@@ -439,6 +439,11 @@ public class ProductServiceJdbcImpl implements ProductService {
       }
     }
     return status;
+  }
+
+
+  public static boolean isResultSetEmpty(ResultSet rs) throws SQLException {
+    return (!rs.isBeforeFirst() && rs.getRow() == 0);
   }
 
 }

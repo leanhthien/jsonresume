@@ -1,4 +1,4 @@
-package model;
+package com.example.demo.model;
 
 import com.example.demo.entity.Product;
 

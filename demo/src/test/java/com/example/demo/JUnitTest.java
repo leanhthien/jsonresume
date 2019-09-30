@@ -1,10 +1,7 @@
 package com.example.demo;
 
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -53,6 +50,7 @@ public class JUnitTest {
         assertSame(language, optional.get());
     }
 
+    @Disabled
     @Test
     public void whenFailingATest_thenFailed() {
         // Test not completed

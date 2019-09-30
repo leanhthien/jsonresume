@@ -3,8 +3,6 @@ package com.example.demo;
 import com.example.demo.entity.Product;
 import com.example.demo.services.ProductService;
 import com.example.demo.services.ProductServiceJdbcImpl;
-import com.example.demo.services.UserService;
-import com.example.demo.services.UserServiceImpl;
 import org.junit.jupiter.api.*;
 
 import java.util.HashSet;
@@ -15,16 +13,15 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ProductServiceJUnitTest {
 
     private ProductService productService = new ProductServiceJdbcImpl();
-    private UserService userService = new UserServiceImpl();
-    private final String USERNAME = "dbadmin1";
-    private final long PRODUCT_ID = 1L;
+    private final long TOTAL_USER_HAS_PRODUCT = 1L;
+    private final long INVALID_ID = -1L;
     private final int MAX_NUMBER = 999999999;
     private final int MIN_NUMBER = 100000000;
-    private long productId = 18L;
+    private long productId;
     private String userName;
 
     @BeforeAll
-    public static void setup() {
+    public static void initAll() {
         System.out.println("Start testing ProductService ...");
     }
 
@@ -38,13 +35,18 @@ public class ProductServiceJUnitTest {
         if (!products.isEmpty()) {
             productId = products.get(products.size()-1).getProductId();
             userName = products.get(products.size()-1).getAppUser().getUserName();
+            System.out.println("Product id: " + productId);
+            System.out.println("Username: "+ userName);
+        }
+        else
+        {
+            System.out.println("Cannot find list product!");
         }
     }
 
+    @DisplayName("Test count amount id from listAllProduct")
     @Test
     public void countId_fromListAllProduct() {
-
-        System.out.println("Start testing countId_fromListAllProduct ...");
 
         List<Product> products = productService.listAllProducts();
 
@@ -54,13 +56,12 @@ public class ProductServiceJUnitTest {
             noDupUser.add(product.getAppUser().getUserName());
         }
 
-        assertEquals(1, noDupUser.size());
+        assertEquals(TOTAL_USER_HAS_PRODUCT, noDupUser.size());
     }
 
+    @DisplayName("Check user with product by listAllProductByUser")
     @Test
     public void checkUserWithProduct_byListAllProductByUser() {
-
-        System.out.println("Start testing checkUserWithProduct_byListAllProductByUser ...");
 
         List<Product> products = productService.listAllProductsByUser(userName);
 
@@ -76,15 +77,33 @@ public class ProductServiceJUnitTest {
         assertTrue(isAllBelong);
     }
 
+    @DisplayName("Check null input in listAllProductByUser")
+    @Test
+    public void checkNullInput_inListAllProductByUser() {
+        assertTrue(productService.listAllProductsByUser(null).isEmpty(), "List product must be empty");
+    }
+
+    @DisplayName("Check input is not exist in listAllProductByUser")
+    @Test
+    public void checkInputIsNotExist_inListAllProductsByUser() {
+        assertTrue(productService.listAllProductsByUser("Jane").isEmpty(), "List product must be empty");
+    }
+
+    @DisplayName("Compare id by listAllProductByUser")
     @Test
     public void compareId_fromGetProductById() {
-        System.out.println("Start testing compareId_fromGetProductById ...");
         assertEquals(productId, (long) productService.getProductById(productId).getProductId());
     }
 
+    @DisplayName("Check invalid id in getProductById")
+    @Test
+    public void invalidInput_inGetProductById() {
+        assertNull(productService.getProductById(INVALID_ID), "Product must be null");
+    }
+
+    @DisplayName("Check create new product with id and telephone by saveOrUpdateProduct")
     @Test
     public void checkCreateProductWithIdAndTelephone_bySaveOrUpdateProduct() {
-        System.out.println("Start testing checkCreateProductWithIdAndTelephone_bySaveOrUpdateProduct ...");
 
         List<Product> products = productService.listAllProducts();
 
@@ -115,10 +134,9 @@ public class ProductServiceJUnitTest {
         assertTrue(newProduct.getTelephone().equals(randomTelephone) && !isExist);
     }
 
+    @DisplayName("Check update product with telephone by saveOrUpdateProduct")
     @Test
-    public void checkUpdateProduct_bySaveOrUpdateProduct() {
-
-        System.out.println("Start testing checkReturnProduct_bySaveOrUpdateProduct ...");
+    public void checkUpdateProductWithTelephone_bySaveOrUpdateProduct() {
 
         Product product = productService.getProductById(productId);
 
@@ -128,7 +146,9 @@ public class ProductServiceJUnitTest {
 
         product.setTelephone(randomTelephone);
 
-        Product editedProduct = productService.saveOrUpdateProduct(product, userName);
+        productService.saveOrUpdateProduct(product, userName);
+
+        Product editedProduct = productService.getProductById(productId);
 
         product.setTelephone(oldTelephone);
 
@@ -138,56 +158,41 @@ public class ProductServiceJUnitTest {
                 && editedProduct.getProductId() == productId);
     }
 
+    @DisplayName("Check delete product with id by deleteProduct")
     @Test
-    public void checkDeleteProduct_byDeleteProduct() {
-
-        System.out.println("Start testing checkDeleteProduct_byDeleteProduct ...");
+    public void checkDeleteProductWithId_byDeleteProduct() {
 
         Product product = productService.getProductById(productId);
 
         productService.deleteProduct(productId);
 
-        Long product_id = productService.getProductById(productId).getProductId();
+        Product deletedProduct = productService.getProductById(productId);
 
         productId = productService.saveOrUpdateProduct(product, product.getAppUser().getUserName()).getProductId();
 
-        assertNull(product_id);
+        assertNull(deletedProduct);
+    }
+
+    @DisplayName("Check delete product with invalid id by deleteProduct")
+    @Test
+    public void checkDeleteProductWithInvalidId_byDeleteProduct() {
+        assertEquals("Fail", productService.deleteProduct(INVALID_ID));
     }
 
     @Disabled
     @Test
     public void wrongSQLSyntax_inListAllProducts() {
-
-        System.out.println("Start testing wrongSQLSyntax_inListAllProducts ...");
         assertNull(productService.listAllProducts(), "List product must be null");
     }
 
     @Disabled
     @Test
-    public void invalidInput_inListAllProductsByUser() {
-
-        System.out.println("Start testing invalidInput_inListAllProductsByUser ...");
-        assertNull(productService.listAllProductsByUser("Jane"), "List product must be null");
-    }
-
-    @Disabled
-    @Test
-    public void invalidInput_inGetProductById() {
-
-        System.out.println("Start testing invalidInput_inGetProductById...");
-        assertNull(productService.getProductById(33L), "List product must be null");
-    }
-
-    @Disabled
-    @Test
     public void wrongSQLSyntax_inGetProductById() {
-
-        System.out.println("Start testing wrongSQLSyntax_inGetProductById...");
         assertNull( productService.getProductById(1L), "List product must be null");
     }
 
     @AfterAll
-    public static void finish() {
+    public static void tearDownAll() {
         System.out.println("End testing ProductService ...");
     }
 }

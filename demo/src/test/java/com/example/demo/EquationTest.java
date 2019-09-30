@@ -30,7 +30,7 @@ public class EquationTest {
             }
         }
         else {
-            float delta = second * second - 4 * first * third -1;
+            float delta = second * second - 4 * first * third;
 
             if (delta < 0) {
                 System.out.print(VO_NGHIEM);
