@@ -8,4 +8,6 @@ public interface UserService {
 
     AppUser saveOrUpdateUser(AppUser user);
 
+    String deleteUser(long id);
+
 }

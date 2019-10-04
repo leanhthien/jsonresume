@@ -40,6 +40,18 @@ public class Product {
         this.appUser = appUser;
     }
 
+    public Product(String name, String jobTitle, String address, String telephone, String email,
+                   String website, String language, String about) {
+        this.name = name;
+        this.jobTitle = jobTitle;
+        this.address = address;
+        this.telephone = telephone;
+        this.email = email;
+        this.website = website;
+        this.language = language;
+        this.about = about;
+    }
+
     public Product(Long productId, String name, String jobTitle, String address, String telephone, String email,
                    String website, String language, String about, boolean enabled) {
         this.productId = productId;

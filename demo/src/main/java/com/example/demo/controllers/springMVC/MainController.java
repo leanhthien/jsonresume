@@ -1,4 +1,4 @@
-package com.example.demo.controllers;
+package com.example.demo.controllers.springMVC;
 
 import com.example.demo.utils.WebUtils;
 import org.springframework.security.core.Authentication;

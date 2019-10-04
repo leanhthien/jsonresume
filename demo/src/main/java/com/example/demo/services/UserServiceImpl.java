@@ -50,4 +50,9 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("User can't be null");
         }
     }
+
+    @Override
+    public String deleteUser(long id) {
+        return null;
+    }
 }

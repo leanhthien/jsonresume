@@ -1,4 +1,4 @@
-package com.example.demo.controllers;
+package com.example.demo.controllers.springMVC;
 
 import com.example.demo.entity.Product;
 import com.example.demo.jdbc.JdbcProductRepository;
@@ -23,9 +23,9 @@ public class ProductController {
 
     private ProductService productService;
 
-    @Autowired
-    @Qualifier("jdbcProductRepositoryImpl")
-    private JdbcProductRepository jdbcProductRepository;
+//    @Autowired
+//    @Qualifier("jdbcProductRepositoryImpl")
+//    private JdbcProductRepository jdbcProductRepository;
 
     @Autowired
     public void setProductService(ProductService productService) {
@@ -87,7 +87,7 @@ public class ProductController {
         return "resume/resumeForm";
     }
 
-    @RequestMapping("product/edit/{id}")
+    @RequestMapping("/product/edit/{id}")
     public String edit(@PathVariable Long id,
                        Model model,
                        HttpServletRequest request,
@@ -102,7 +102,7 @@ public class ProductController {
 
     }
 
-    @RequestMapping("view/{id}")
+    @RequestMapping("/view/{id}")
     public String view(@PathVariable Long id, Model model) {
         Product product = productService.getProductById(id);
         if (product != null) {

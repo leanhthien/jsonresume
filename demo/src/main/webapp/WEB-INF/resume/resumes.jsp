@@ -1,3 +1,6 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -11,16 +14,12 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/v4-shims.css">
 
-    <link href="../static/css/spring-core.css"
-          th:href="@{css/spring-core.css}" rel="stylesheet" media="screen"/>
+    <link href="../../../resources/static/css/spring-core.css"
+          href="@{css/spring-core.css}" rel="stylesheet" media="screen"/>
 </head>
 <body>
 
 <div class="container">
-
-    <div>
-        <th:block th:include="/_nav"></th:block>
-    </div>
 
     <div>
         <span class="profile-pic-container">
@@ -30,20 +29,26 @@
                    itemprop="image"/>
             </div>
             <div class="name-and-profession">
-              <h3><span th:utext="${#request.userPrincipal.name}"></span></h3>
+              <h3><span></span></h3>
             </div>
         </span>
     </div>
 
-    <div class="alert alert-danger" role="alert" th:if="${error != null && error != ''}">
-        Something went wrong!
-    </div>
+    <c:if test="${error != null && error != ''}">
 
-    <div class="row" th:if="${#lists.isEmpty(products)}">
+    <div class="alert alert-danger" role="alert">
+            Something went wrong!
+    </div>
+    </c:if>
+
+    <c:if test="${empty products}">
+    <div class="row">
         <p>You don't have any resume. Let make new one to start!</p>
     </div>
+    </c:if>
 
-    <div th:if="${not #lists.isEmpty(products)}">
+    <c:if test="${!empty products}">
+    <div>
         <h2>Your Resume List</h2>
         <table class="table table-striped">
             <tr>
@@ -53,25 +58,34 @@
                 <th>Top</th>
                 <th colspan="4">Action</th>
             </tr>
-            <tr th:each="product : ${products}">
-                <td th:text="${product.productId}"></td>
-                <td th:text="${product.name}"></td>
-                <td th:text="${product.jobTitle}"></td>
-                <td >
-                    <a href="#" th:if="${product.enabled}">
-                        <i class="fas fa-star"></i>
-                    </a>
+            <c:forEach items="${products}" var="product" >
+            <tr>
+                <td>${product.productId}</td>
+                <td>${product.name}</td>
+                <td>${product.jobTitle}</td>
+                <td>
+                <c:if test="${product.enabled == true}">
+                        <a href="#"><i class="fas fa-star"></i></a>
+                </c:if>
                 </td>
-                <td><a th:href="${'/product/' + product.productId}">View</a></td>
-                <td><a th:href="${'/product/edit/' + product.productId}">Edit</a></td>
-                <td><a th:if="${not product.enabled}" th:href="${'/product/set_enabled/' + product.productId}">Enable Top</a></td>
-                <td><a th:href="${'/product/delete/' + product.productId}">Delete</a></td>
+                <td><a href="detail?id=<c:out value='${product.productId}'/>">View</a></td>
+                <td><a href="edit?id=<c:out value='${product.productId}'/>">Edit</a></td>
+                <td>
+                <c:if test="${product.enabled == false}">
+                    <a href="enable?id=<c:out value='${product.productId}'/>">Enable Top</a>
+                </c:if>
+                </td>
+
+                <td><a href="delete?id=<c:out value='${product.productId}'/>">Delete</a></td>
             </tr>
+            </c:forEach>
         </table>
     </div>
+    </c:if>
+
     <div class="row">
         <div class="text-center">
-            <a href="/product/new" class="btn btn-info" role="button">New Resume</a>
+            <a href="new" class="btn btn-info" role="button">New Resume</a>
         </div>
     </div>
 </div>

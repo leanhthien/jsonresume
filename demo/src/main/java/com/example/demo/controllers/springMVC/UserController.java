@@ -1,4 +1,4 @@
-package com.example.demo.controllers;
+package com.example.demo.controllers.springMVC;
 
 import com.example.demo.entity.AppUser;
 import com.example.demo.services.UserService;

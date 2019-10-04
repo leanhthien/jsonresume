@@ -1,6 +1,8 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <!doctype html> 
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
   <head> 
     <script src="https://jsonresume.org/cdn-cgi/apps/head/QEWNwoPSl2O5LqMXvi595gsiMPg.js"></script>
     <link rel="dns-prefetch" href="//fonts.googleapis.com" /> 
@@ -33,9 +35,8 @@
     <div id="main"> 
       <div id="viewport"> 
         <aside id="sidebar"> 
-          <a href="/">Home</a> 
-          <a href="/getting-started/">Getting Started</a> 
-          <a href="/themes/">Themes</a>
+          <a href="home">Home</a>
+          <a href="all">Themes</a>
         </aside> 
       <div class="inner"> 
         <nav id="nav"> 
@@ -43,14 +44,14 @@
           <div class="container"> 
             <div class="row"> 
               <div class="col-sm-12"> 
-                <a href="/my-app/servlet/test">JSON Resume</a>
+                <a href="home">JSON Resume</a>
                 <div class="float-right hidden-xs">
-                  <a th:if="${#request.userPrincipal == null}" href="/registration/">Sign up</a>
-                  <a th:if="${#request.userPrincipal == null}" href="/login">Sign in</a>
-                  <a href="/products/all">Themes</a>
-                  <a href="/product/new/">Create resume</a>
-                  <a href="/products/user" th:if="${#request?.userPrincipal?.name != '' && #request?.userPrincipal?.name != null}" th:text="${#request?.userPrincipal?.name}"></a>
-                  <a href="/logout/" th:if="${#request?.userPrincipal?.name != '' && #request?.userPrincipal?.name != null}" >Log out</a>
+                  <a href="registration">Sign up</a>
+                  <a href="login">Sign in</a>
+                  <a href="product/all">Themes</a>
+                  <a href="product/new">Create resume</a>
+                  <a href="product/user">?????</a>
+                  <a href="logout" >Log out</a>
                 </div> 
               </div> 
             </div> 
@@ -72,17 +73,17 @@
               <div class="feature col-sm-4">
                 <h2>New to this?</h2> 
                 <p>Create new account to see and create resume</p> 
-                <a href="/registration/" class="btn">Get started</a> 
+                <a href="registration" class="btn">Get started</a>
               </div> 
               <div class="feature col-sm-4"> 
                 <h2>Resume</h2> 
                 <p>Browse our gallery of resume themes made by the community.</p> 
-                <a href="/products/all" class="btn">View themes</a>
+                <a href="product/all" class="btn">View themes</a>
               </div> 
               <div class="feature col-sm-4"> 
                 <h2>Make new resume</h2> 
                 <p>Themes do not fix you? Create your own resume</p> 
-                <a href="/product/new/" class="btn">Create theme</a> 
+                <a href="product/new" class="btn">Create theme</a>
               </div> 
             </div> 
           </div> 
