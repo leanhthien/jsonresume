@@ -20,21 +20,21 @@
 <body>
 <div class="container">
 
+    <div style="height: 75px;"></div>
+
     <h2 class="text-center">Log in</h2>
 
-    <!-- /login?error=true -->
-    <c:if test ="">
-    <div class="alert alert-danger" role="alert">
-        Login failed!<br/>
-        Reason :
-        <span th:if="${#session != null and #session.getAttribute('SPRING_SECURITY_LAST_EXCEPTION') != null}"
-              th:utext="${#session.getAttribute('SPRING_SECURITY_LAST_EXCEPTION').message}">
-                Static summary
-         </span>
-    </div>
+    <div style="height: 10px;"></div>
+
+    <c:if test="${!empty errorResponse}">
+         <div class="alert alert-danger" role="alert">
+              <c:out value = "${errorResponse}" />
+         </div>
     </c:if>
+
     <div>
-        <form class="form-horizontal" th:action="@{/login}" method="post">
+        <c:set var="context" value="${pageContext.request.contextPath}" />
+        <form class="form-horizontal" action="${context}/servlet/login" method="post">
             <div class="form-group d-flex justify-content-center">
                 <label class="col-sm-1 control-label" >Username:</label>
                 <div class="col-sm-6">
@@ -53,13 +53,16 @@
                     Remember me
                 </label>
             </div>
+            <div style="height: 10px;"></div>
 
             <div class="text-center">
                 <button type="submit" class="btn btn-info">Log in</button>
             </div>
         </form>
+
+        <div style="height: 20px;"></div>
         <div class="text-center">
-            Don't have an account? Let <a href="/registration/">sign up</a>
+            Don't have an account? Let <a href="registration">sign up</a>
         </div>
 
     </di>

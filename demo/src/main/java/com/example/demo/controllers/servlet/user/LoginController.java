@@ -6,13 +6,14 @@ import com.example.demo.services.UserServiceJdbcImpl;
 import com.example.demo.utils.EncrytedPasswordUtils;
 
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
 import java.io.IOException;
+
+import static com.example.demo.utils.Const.ERROR_RESPONSE;
+import static com.example.demo.utils.Const.LOGIN_SESSION;
 
 @WebServlet(name="login", urlPatterns = "/servlet/login")
 public class LoginController extends HttpServlet {
@@ -30,9 +31,9 @@ public class LoginController extends HttpServlet {
             RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/user/login.jsp");
             dispatcher.forward(request, response);
         } catch (Exception e) {
-            response.sendRedirect("/");
+            this.log("Error in [" + this.getClass().getSimpleName() + "] at method ["+ Thread.currentThread().getStackTrace()[1].getMethodName() + "]", e);
+            response.sendRedirect("home");
         }
-
     }
 
     @Override
@@ -40,26 +41,38 @@ public class LoginController extends HttpServlet {
 
         try {
 
-            String userName = request.getParameter("userName");
-            String encryptedPassword = EncrytedPasswordUtils.encrytePassword(request.getParameter("encryptedPassword"));
+            String userName = request.getParameter("username");
+            String rawPassword = request.getParameter("password");
 
             AppUser appUser = userService.getUserByName(userName);
 
-            if (appUser != null && encryptedPassword.equals(appUser.getEncryptedPassword())) {
+            if (appUser != null && EncrytedPasswordUtils.isPasswordMatch(rawPassword, appUser.getEncryptedPassword())) {
 
-                HttpSession session = request.getSession();
+                HttpSession oldSession = request.getSession(false);
 
-                session.setAttribute("userName", userName);
+                if (oldSession != null) {
+                    oldSession.invalidate();
+                }
 
-                request.setAttribute("appUser", appUser);
+                HttpSession newSession = request.getSession(true);
 
-                RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/resume/resumes.jsp");
+                newSession.setMaxInactiveInterval(5*60);
+
+                Cookie message = new Cookie("message", "JsonResume");
+
+                response.addCookie(message);
+
+                newSession.setAttribute(LOGIN_SESSION, userName);
+
+                response.sendRedirect("product/user");
+            }
+            else {
+                request.setAttribute(ERROR_RESPONSE,"Username or password is not correct!");
+                RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/user/login.jsp");
                 dispatcher.forward(request, response);
             }
-
-
-            response.sendRedirect("home");
         } catch (Exception e) {
+            this.log("Error in [" + this.getClass().getSimpleName() + "] at method ["+ Thread.currentThread().getStackTrace()[1].getMethodName() + "]", e);
             response.sendRedirect("/");
         }
     }

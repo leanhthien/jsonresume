@@ -12,6 +12,8 @@ public interface ProductService {
 
   Product getProductById(Long id);
 
+  Product getTopProduct(String username);
+
   Product saveOrUpdateProduct(Product product, String username);
 
   Product setEnabledProduct(Long productId, String username);

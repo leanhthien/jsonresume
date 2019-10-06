@@ -101,6 +101,14 @@ public class ProductServiceJUnitTest {
         assertNull(productService.getProductById(INVALID_ID), "Product must be null");
     }
 
+    @DisplayName("Check top product of user by getTopProduct")
+    @Test
+    public void checkTopProductOfUser_byGetTopProduct() {
+
+        Product topProduct = productService.getTopProduct(userName);
+        assertTrue(topProduct.getAppUser().getUserName().equals(userName) && topProduct.isEnabled());
+    }
+
     @DisplayName("Check create new product with id and telephone by saveOrUpdateProduct")
     @Test
     public void checkCreateProductWithIdAndTelephone_bySaveOrUpdateProduct() {

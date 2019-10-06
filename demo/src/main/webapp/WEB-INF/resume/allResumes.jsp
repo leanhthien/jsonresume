@@ -17,10 +17,10 @@
 <body>
 <div class="container">
 
-    <c:if test="${!empty error}">
-    <div class="alert alert-danger" role="alert">
-            Something went wrong!
-    </div>
+    <c:if test="${!empty errorResponse}">
+            <div class="alert alert-danger" role="alert">
+                 <c:out value="${errorResponse}" />
+            </div>
     </c:if>
 
     <c:if test="${empty products}">

@@ -15,4 +15,14 @@
         <url-pattern>/servlet/product/all</url-pattern>
     </servlet-mapping>
 
+    <filter>
+        <filter-name>AuthenticationFilter</filter-name>
+        <filter-class>com.example.demo.utils.AuthenticationFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>AuthenticationFilter</filter-name>
+        <url-pattern>/servlet/product/*</url-pattern>
+    </filter-mapping>
+
 </web-app>

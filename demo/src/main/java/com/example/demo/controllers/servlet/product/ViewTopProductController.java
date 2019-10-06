@@ -11,11 +11,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
-@WebServlet(name="viewDetailProduct", urlPatterns = "/servlet/product/detail")
-public class ViewDetailProductController extends HttpServlet {
+import static com.example.demo.utils.Const.LOGIN_SESSION;
 
+@WebServlet(name="viewDetailTopProduct", urlPatterns = "/servlet/view")
+public class ViewTopProductController extends HttpServlet {
     private ProductService productService;
 
     public void init() {
@@ -26,8 +26,10 @@ public class ViewDetailProductController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         try {
-            long id = Long.parseLong(request.getParameter("id"));
-            Product product = productService.getProductById(id);
+
+            String username = request.getParameter("name");
+
+            Product product = productService.getTopProduct(username);
 
             request.setAttribute("product", product);
 
@@ -37,7 +39,6 @@ public class ViewDetailProductController extends HttpServlet {
             this.log("Error in [" + this.getClass().getSimpleName() + "] at method ["+ Thread.currentThread().getStackTrace()[1].getMethodName() + "]", e);
             response.sendRedirect("/");
         }
-
     }
 
     @Override

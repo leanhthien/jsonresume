@@ -13,6 +13,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+import static com.example.demo.utils.Const.ERROR_RESPONSE;
+import static com.example.demo.utils.Const.LOGIN_SESSION;
+
 @WebServlet(name="listUserProduct", urlPatterns = "/servlet/product/user")
 public class ViewUserProductController extends HttpServlet {
 
@@ -25,20 +28,27 @@ public class ViewUserProductController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        try {
-            List<Product> products = productService.listAllProductsByUser("dbadmin1");
+        String username = (String) request.getSession(false).getAttribute(LOGIN_SESSION);
 
-            if(products == null)
-                request.setAttribute("error", true);
-            else
-                request.setAttribute("products", products);
+        if (!username.isEmpty()) {
+            try {
+                List<Product> products = productService.listAllProductsByUser(username);
 
-            RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/resume/resumes.jsp");
-            dispatcher.forward(request, response);
-        } catch (Exception e) {
-            response.sendRedirect("/");
+                if(products == null) {
+                    request.setAttribute(ERROR_RESPONSE, "Something went wrong!");
+                    RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/index.jsp");
+                    dispatcher.forward(request, response);
+                }
+                else {
+                    request.setAttribute("products", products);
+                    RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/resume/resumes.jsp");
+                    dispatcher.forward(request, response);
+                }
+            } catch (Exception e) {
+                this.log("Error in [" + this.getClass().getSimpleName() + "] at method ["+ Thread.currentThread().getStackTrace()[1].getMethodName() + "]", e);
+                response.sendRedirect("/");
+            }
         }
-
     }
 
     @Override

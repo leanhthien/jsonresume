@@ -2,6 +2,7 @@ package com.example.demo.services;
 
 import com.example.demo.entity.AppUser;
 import com.example.demo.entity.Product;
+import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
@@ -172,6 +173,78 @@ public class ProductServiceJdbcImpl implements ProductService {
 
         if (!isResultSetEmpty(rs) && rs.next()) {
             product.setAppUser(new AppUser(user_id, rs.getString("user_name")));
+        }
+      }
+
+      rs.close();
+      preparedStatement.close();
+
+    } catch(Exception se){
+      se.printStackTrace();
+      product = null;
+    } finally {
+      try {
+        if (conn != null)
+          conn.close();
+      } catch (SQLException se) {
+        se.printStackTrace();
+        product = null;
+      }
+    }
+
+    return product;
+  }
+
+  @Override
+  public Product getTopProduct(String username) {
+    Connection conn = null;
+    PreparedStatement preparedStatement;
+    Product product  = null;
+    AppUser appUser = null;
+    try {
+
+      Class.forName(JDBC_DRIVER);
+
+      conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+      String sql =  "SELECT USER_ID " +
+                    "FROM APP_USER " +
+                    "WHERE USER_NAME = ?";
+      preparedStatement = conn.prepareStatement(sql);
+
+      preparedStatement.setString(1, username);
+
+      ResultSet rs = preparedStatement.executeQuery();
+
+      if (!isResultSetEmpty(rs) && rs.next()) {
+
+        long user_id = rs.getLong("user_id");
+        appUser = new AppUser(user_id, username);
+
+        sql = "SELECT * FROM PRODUCT WHERE USER_ID = ? AND ENABLED = ? ";
+
+        preparedStatement = conn.prepareStatement(sql);
+
+        preparedStatement.setLong(1, user_id);
+        preparedStatement.setBoolean(2, true);
+
+        rs = preparedStatement.executeQuery();
+
+        if (!isResultSetEmpty(rs) && rs.next()) {
+
+          long product_id = rs.getLong("product_id");
+          String name = rs.getString("name");
+          String job_title = rs.getString("job_title");
+          String address = rs.getString("address");
+          String telephone = rs.getString("telephone");
+          String email = rs.getString("email");
+          String website = rs.getString("website");
+          String language = rs.getString("language");
+          String about = rs.getString("about");
+          boolean enabled = rs.getBoolean("enabled");
+
+          product = new Product(product_id, name, job_title, address, telephone, email, website, language, about, enabled);
+          product.setAppUser(appUser);
         }
       }
 
@@ -442,7 +515,7 @@ public class ProductServiceJdbcImpl implements ProductService {
   }
 
 
-  public static boolean isResultSetEmpty(ResultSet rs) throws SQLException {
+  private static boolean isResultSetEmpty(ResultSet rs) throws SQLException {
     return (!rs.isBeforeFirst() && rs.getRow() == 0);
   }
 

@@ -15,20 +15,17 @@ import java.io.IOException;
 @WebServlet(name="logout", urlPatterns = "/servlet/logout")
 public class LogoutController extends HttpServlet {
 
-    private UserService userService;
-
-    public void init() {
-        userService = new UserServiceJdbcImpl();
-    }
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         try {
-            HttpSession session = request.getSession();
-            session.invalidate();
+            HttpSession session = request.getSession(false);
+            if(session != null){
+                session.invalidate();
+            }
             response.sendRedirect("home");
         } catch (Exception e) {
+            this.log("Error in [" + this.getClass().getSimpleName() + "] at method ["+ Thread.currentThread().getStackTrace()[1].getMethodName() + "]", e);
             response.sendRedirect("/");
         }
 
@@ -36,7 +33,6 @@ public class LogoutController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
         doGet(request, response);
     }
 }

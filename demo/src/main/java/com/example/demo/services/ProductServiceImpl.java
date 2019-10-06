@@ -57,7 +57,12 @@ public class ProductServiceImpl implements ProductService {
       return product.orElse(null);
     }
 
-    @Override
+  @Override
+  public Product getTopProduct(String username) {
+    return null;
+  }
+
+  @Override
     public Product saveOrUpdateProduct(Product product, String username) {
       if (product != null){
 //        if (product.getProductId() == null){

@@ -47,6 +47,11 @@ public class ProductServiceJdbcTemplateImpl implements ProductService {
   }
 
   @Override
+  public Product getTopProduct(String username) {
+    return null;
+  }
+
+  @Override
   public Product saveOrUpdateProduct(Product product, String username) {
 
     String sql =  "SELECT * " +

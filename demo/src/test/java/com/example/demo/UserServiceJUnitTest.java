@@ -1,13 +1,9 @@
 package com.example.demo;
 
 import com.example.demo.entity.AppUser;
-import com.example.demo.entity.Product;
 import com.example.demo.services.*;
 import com.example.demo.utils.EncrytedPasswordUtils;
 import org.junit.jupiter.api.*;
-
-import java.util.HashSet;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -47,7 +43,7 @@ public class UserServiceJUnitTest {
     public void createNewUser_fromGetUserByName() {
 
         String randomUsername = String.valueOf( (int) ((Math.random() * ((MAX_NUMBER - MIN_NUMBER) + 1)) + MIN_NUMBER));
-        String password = EncrytedPasswordUtils.encrytePassword("123456");
+        String password = EncrytedPasswordUtils.encryptPassword("123456");
         AppUser appUser = new AppUser(randomUsername, password);
 
         AppUser newAppUser = userService.saveOrUpdateUser(appUser);

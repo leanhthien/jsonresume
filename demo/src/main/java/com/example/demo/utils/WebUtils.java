@@ -33,9 +33,6 @@ public class WebUtils {
     }
 
     public static Optional<String> redirect(HttpServletRequest request, RedirectAttributes rm) {
-//        rm.addFlashAttribute("error", "Error");
-//        String referer = request.getHeader("Referer");
-//        return "redirect:" + referer;
         rm.addFlashAttribute("error", "Error");
         return Optional.ofNullable(request.getHeader("Referer")).map(requestUrl -> "redirect:" + requestUrl);
     }

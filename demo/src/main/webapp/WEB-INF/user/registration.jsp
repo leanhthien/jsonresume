@@ -33,32 +33,47 @@
 <body>
 <div class="container">
 
+    <div style="height: 75px;"></div>
+
     <h2 class="text-center">Register account</h2>
+
+     <div style="height: 10px;"></div>
+
+    <c:if test="${!empty errorResponse}">
+        <div class="alert alert-danger" role="alert">
+            <c:out value = "${errorResponse}" />
+        </div>
+    </c:if>
+
     <div>
-        <form name="registrationForm" class="form-horizontal" th:action="@{registration}" method="post" onsubmit = "return validateForm()">
+        <c:set var="context" value="${pageContext.request.contextPath}" />
+        <form name="registrationForm" class="form-horizontal" action="@{${context}/servlet/registration}" method="post" onsubmit = "return validateForm()">
 
             <div class="form-group d-flex justify-content-center">
-                <label class="col-sm-1 control-label">Username:</label>
+                <label class="col-sm-2 control-label">Username:</label>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control" name="userName" required/>
+                    <input type="text" class="form-control" name="username" required/>
                 </div>
             </div>
             <div class="form-group d-flex justify-content-center">
-                <label class="col-sm-1 control-label">Password:</label>
+                <label class="col-sm-2 control-label">Password:</label>
                 <div class="col-sm-6">
-                    <input type="password" class="form-control" name="encryptedPassword" required/>
+                    <input type="password" class="form-control" name="password" required/>
                 </div>
             </div>
             <div class="form-group d-flex justify-content-center">
-                <label class="col-sm-1 control-label">Retype Password:</label>
+                <label class="col-sm-2 control-label">Retype Password:</label>
                 <div class="col-sm-6">
                     <input type="password" class="form-control" name="retypePassword" required/>
                 </div>
-                        </div>
+            </div>
             <div class="text-center">
                 <button type="submit" class="btn btn-info">Submit</button>
             </div>
         </form>
+
+        <div style="height: 20px;"></div>
+
         <div class="text-center">
             Already have an account? Let <a href="login">sign in</a>
         </div>

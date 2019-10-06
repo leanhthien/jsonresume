@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
 
         if (user != null){
 
-            user.setEncryptedPassword(EncrytedPasswordUtils.encrytePassword(user.getEncryptedPassword()));
+            user.setEncryptedPassword(EncrytedPasswordUtils.encryptPassword(user.getEncryptedPassword()));
             userRepository.save(user);
 
             Optional<AppRole> appRole = roleRepository.findById(2L);

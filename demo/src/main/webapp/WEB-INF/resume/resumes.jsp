@@ -21,24 +21,54 @@
 
 <div class="container">
 
-    <div>
-        <span class="profile-pic-container">
-            <div class="profile-pic">
-              <img class="media-object img-circle center-block" data-src="holder.js/100x100" alt="Richard Hendriks"
-                   src="https://s.gravatar.com/avatar/7e6be1e623fb85adde3462fa8587caf2?s=100&amp;r=pg&amp;d=mm"
-                   itemprop="image"/>
-            </div>
-            <div class="name-and-profession">
-              <h3><span></span></h3>
-            </div>
-        </span>
-    </div>
+   <div class="row">
+      <div class="col-3">
+          <span class="profile-pic-container">
+              <div class="profile-pic">
+                <img class="media-object img-circle center-block" data-src="holder.js/100x100" alt="Richard Hendriks"
+                     src="https://s.gravatar.com/avatar/7e6be1e623fb85adde3462fa8587caf2?s=100&amp;r=pg&amp;d=mm"
+                     itemprop="image"/>
+              </div>
+              <div class="name-and-profession">
+                <h3><c:if test="${!empty sessionScope.loginUser}"><c:out value="${sessionScope.loginUser}" /></c:if></h3>
+              </div>
+          </span>
 
-    <c:if test="${error != null && error != ''}">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+          Share your resume
+        </button>
 
-    <div class="alert alert-danger" role="alert">
-            Something went wrong!
-    </div>
+      </div>
+   </div>
+
+   <!-- The Modal -->
+   <div class="modal" id="myModal">
+     <div class="modal-dialog">
+       <div class="modal-content">
+
+         <!-- Modal body -->
+         <div class="modal-body">
+
+           Share this link to another for showing your resume:
+            <c:set var="context" value="${pageContext.request.contextPath}" />
+            <input type="text" class="form-control" value="<c:if test='${!empty sessionScope.loginUser}'>${context}/servlet/view?name=${sessionScope.loginUser}</c:if>"/>
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+         </div>
+
+       </div>
+     </div>
+   </div>
+
+    <c:if test="${!empty errorResponse}">
+        <div class="alert alert-danger" role="alert">
+             <c:out value="${errorResponse}" />
+        </div>
+    </c:if>
+
+    <c:if test="${!empty successResponse}">
+        <div class="alert alert-primary" role="alert">
+             <c:out value="${successResponse}" />
+        </div>
     </c:if>
 
     <c:if test="${empty products}">
@@ -83,10 +113,8 @@
     </div>
     </c:if>
 
-    <div class="row">
-        <div class="text-center">
-            <a href="new" class="btn btn-info" role="button">New Resume</a>
-        </div>
+    <div class="text-center">
+         <a href="new" class="btn btn-info" role="button">New Resume</a>
     </div>
 </div>
 
