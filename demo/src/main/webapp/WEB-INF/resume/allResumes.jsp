@@ -15,6 +15,9 @@
           th:href="@{css/spring-core.css}" rel="stylesheet" media="screen"/>
 </head>
 <body>
+
+<jsp:include page="../_nav.jsp"></jsp:include>
+
 <div class="container">
 
     <c:if test="${!empty errorResponse}">

@@ -1,23 +1,47 @@
-<nav class="navbar navbar-light justify-content-end" xmlns:th="http://www.thymeleaf.org">
-    <ul class="nav">
-        <li class="nav-item">
-            <a class="nav-link" th:if="${#request.userPrincipal == null}" href="/registration/">Sign up</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" th:if="${#request.userPrincipal == null}" href="/login">Sign in</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="/products/all">Themes</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="/product/new/">Create Resume</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="/products/user" th:if="${#request?.userPrincipal?.name != '' && #request?.userPrincipal?.name != null}" th:text="${#request?.userPrincipal?.name}"></a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="/logout" th:if="${#request?.userPrincipal?.name != '' && #request?.userPrincipal?.name != null}" >Log out</a>
-        </li>
-    </ul>
-</nav>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<div class="container-fluid">
+
+  <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-end" >
+
+      <a class="navbar-brand" href="${pageContext.request.contextPath}/servlet/home">Json Resume</a>
+
+      <ul class="navbar-nav">
+          <li class="nav-item">
+          <c:if test="${empty sessionScope.loginUser}">
+              <a class="nav-link" href="${pageContext.request.contextPath}/servlet/registration">Sign up</a>
+          </c:if>
+          </li>
+          <li class="nav-item">
+          <c:if test="${empty sessionScope.loginUser}">
+              <a class="nav-link" href="${pageContext.request.contextPath}/servlet/login">Sign in</a>
+          </c:if>
+          </li>
+          <li class="nav-item">
+          <c:if test="${!empty sessionScope.loginUser}">
+              <a class="nav-link" href="${pageContext.request.contextPath}/servlet/product/all">Themes</a>
+          </c:if>
+          </li>
+          <li class="nav-item">
+          <c:if test="${!empty sessionScope.loginUser}">
+              <a class="nav-link" href="${pageContext.request.contextPath}/servlet/product/new">Create Resume</a>
+          </c:if>
+          </li>
+          <li class="nav-item">
+          <c:if test="${!empty sessionScope.loginUser}">
+              <a class="nav-link" href="${pageContext.request.contextPath}/servlet/product/user"><c:out value="${sessionScope.loginUser}"/></a>
+          </c:if>
+          </li>
+          <li class="nav-item">
+          <c:if test="${!empty sessionScope.loginUser}">
+              <a class="nav-link" href="${pageContext.request.contextPath}/servlet/logout">Log out</a>
+          </c:if>
+          </li>
+
+      </ul>
+  </nav>
+
+</div>
+
+<div style="height: 50px;"></div>
 

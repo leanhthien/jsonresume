@@ -33,11 +33,6 @@
   </head> 
   <body>
 
-  <c:if test="${!empty sessionScope.loginUser}">
-      <c:set var="userName" value="@{sessionScope.loginUser}" />
-  </c:if>
-
-
     <div id="main"> 
       <div id="viewport"> 
         <aside id="sidebar"> 
@@ -61,6 +56,8 @@
                   <c:if test="${!empty sessionScope.loginUser}">
                     <a href="product/all">Themes</a>
                     <a href="product/new">Create resume</a>
+                  </c:if>
+                  <c:if test="${!empty sessionScope.loginUser}">
                     <a href="product/user"><c:out value="@{sessionScope.loginUser}" /></a>
                   </c:if>
 

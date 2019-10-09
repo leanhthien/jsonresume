@@ -15,9 +15,10 @@
           th:href="@{css/spring-core.css}" rel="stylesheet" media="screen"/>
 </head>
 <body>
+
+<jsp:include page="../_nav.jsp"></jsp:include>
+
 <div class="container">
-
-
 
     <h2 class ="text-center">Resume Details</h2>
     <div>
@@ -79,6 +80,9 @@
             </div>
         </form>
     </div>
+
+    <div style="height:75px;"></div>
+
 </div>
 
 </body>

@@ -11,6 +11,7 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
+import java.util.Optional;
 
 import static com.example.demo.utils.Const.ERROR_RESPONSE;
 import static com.example.demo.utils.Const.LOGIN_SESSION;
@@ -20,12 +21,18 @@ public class LoginController extends HttpServlet {
 
     private UserService userService;
 
+    private Optional<String> prevLink;
+
     public void init() {
         userService = new UserServiceJdbcImpl();
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        prevLink = Optional.ofNullable(request.getHeader("Referer"));
+
+        this.log("Previous url is: " + prevLink);
 
         try {
             RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/user/login.jsp");
@@ -50,13 +57,12 @@ public class LoginController extends HttpServlet {
 
                 HttpSession oldSession = request.getSession(false);
 
-                if (oldSession != null) {
+                if (oldSession != null)
                     oldSession.invalidate();
-                }
 
                 HttpSession newSession = request.getSession(true);
 
-                newSession.setMaxInactiveInterval(5*60);
+                newSession.setMaxInactiveInterval(60*60);
 
                 Cookie message = new Cookie("message", "JsonResume");
 
@@ -64,7 +70,8 @@ public class LoginController extends HttpServlet {
 
                 newSession.setAttribute(LOGIN_SESSION, userName);
 
-                response.sendRedirect("product/user");
+                response.sendRedirect(prevLink.orElse("/"));
+
             }
             else {
                 request.setAttribute(ERROR_RESPONSE,"Username or password is not correct!");

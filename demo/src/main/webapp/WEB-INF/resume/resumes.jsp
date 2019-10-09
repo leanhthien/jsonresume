@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <title>List Products</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -14,28 +14,30 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/v4-shims.css">
 
-    <link href="../../../resources/static/css/spring-core.css"
+    <link href="../class/static/css/spring-core.css"
           href="@{css/spring-core.css}" rel="stylesheet" media="screen"/>
 </head>
 <body>
 
+<jsp:include page="../_nav.jsp"></jsp:include>
+
 <div class="container">
 
    <div class="row">
-      <div class="col-3">
+      <div class="col-3 text-center">
           <span class="profile-pic-container">
               <div class="profile-pic">
                 <img class="media-object img-circle center-block" data-src="holder.js/100x100" alt="Richard Hendriks"
                      src="https://s.gravatar.com/avatar/7e6be1e623fb85adde3462fa8587caf2?s=100&amp;r=pg&amp;d=mm"
                      itemprop="image"/>
               </div>
-              <div class="name-and-profession">
-                <h3><c:if test="${!empty sessionScope.loginUser}"><c:out value="${sessionScope.loginUser}" /></c:if></h3>
+              <div class="name-and-profession ">
+                <h5><c:if test="${!empty sessionScope.loginUser}"><c:out value="${sessionScope.loginUser}" /></c:if></h5>
               </div>
           </span>
 
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-          Share your resume
+        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">
+          Share resume
         </button>
 
       </div>
@@ -49,10 +51,12 @@
          <!-- Modal body -->
          <div class="modal-body">
 
-           Share this link to another for showing your resume:
+           <p style="padding-bottom: 10px; padding-top: 20px;">Share this link to another for showing your resume:</p>
             <c:set var="context" value="${pageContext.request.contextPath}" />
             <input type="text" class="form-control" value="<c:if test='${!empty sessionScope.loginUser}'>${context}/servlet/view?name=${sessionScope.loginUser}</c:if>"/>
+            <div class="text-center" style="padding: 20px;">
             <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
          </div>
 
        </div>
@@ -78,7 +82,7 @@
     </c:if>
 
     <c:if test="${!empty products}">
-    <div>
+    <div style="padding-top: 25px;">
         <h2>Your Resume List</h2>
         <table class="table table-striped">
             <tr>
@@ -113,9 +117,8 @@
     </div>
     </c:if>
 
-    <div class="text-center">
-         <a href="new" class="btn btn-info" role="button">New Resume</a>
-    </div>
+    <a href="new" class="btn btn-info" role="button">New Resume</a>
+
 </div>
 
 </body>
