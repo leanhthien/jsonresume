@@ -21,9 +21,12 @@ public class LogoutController extends HttpServlet {
         try {
             HttpSession session = request.getSession(false);
             if(session != null){
+                this.log("Remove session");
                 session.invalidate();
+                response.sendRedirect("home");
+                return;
             }
-            response.sendRedirect("home");
+
         } catch (Exception e) {
             this.log("Error in [" + this.getClass().getSimpleName() + "] at method ["+ Thread.currentThread().getStackTrace()[1].getMethodName() + "]", e);
             response.sendRedirect("/");

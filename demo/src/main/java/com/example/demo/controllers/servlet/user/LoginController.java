@@ -32,7 +32,7 @@ public class LoginController extends HttpServlet {
 
         prevLink = Optional.ofNullable(request.getHeader("Referer"));
 
-        this.log("Previous url is: " + prevLink);
+        this.log("Previous url is: " + prevLink.toString());
 
         try {
             RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/user/login.jsp");
@@ -62,7 +62,7 @@ public class LoginController extends HttpServlet {
 
                 HttpSession newSession = request.getSession(true);
 
-                newSession.setMaxInactiveInterval(60*60);
+                newSession.setMaxInactiveInterval(5*60);
 
                 Cookie message = new Cookie("message", "JsonResume");
 
@@ -70,10 +70,14 @@ public class LoginController extends HttpServlet {
 
                 newSession.setAttribute(LOGIN_SESSION, userName);
 
-                if (prevLink.toString().contains("registration") || prevLink.toString().contains("login"))
+                if (prevLink.toString().contains("registration")
+                        || prevLink.toString().contains("login")
+                        || prevLink.toString().contains("empty")) {
                     response.sendRedirect("product/user");
-                else
-                    response.sendRedirect(prevLink.orElse("/"));
+                }
+                else {
+                    response.sendRedirect(prevLink.orElse("home"));
+                }
 
             }
             else {
