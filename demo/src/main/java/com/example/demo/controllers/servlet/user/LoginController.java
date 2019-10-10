@@ -69,6 +69,7 @@ public class LoginController extends HttpServlet {
 
                 if (prevLink.toString().contains("registration")
                         || prevLink.toString().contains("login")
+                        || prevLink.toString().contains("logout")
                         || prevLink.toString().contains("empty")) {
                     response.sendRedirect("product/user");
                 }
