@@ -30,16 +30,22 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        prevLink = Optional.ofNullable(request.getHeader("Referer"));
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            response.sendRedirect("product/user");
+        }
+        else {
+            prevLink = Optional.ofNullable(request.getHeader("Referer"));
 
-        this.log("Previous url is: " + prevLink.toString());
+            this.log("Previous url is: " + prevLink.toString());
 
-        try {
-            RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/user/login.jsp");
-            dispatcher.forward(request, response);
-        } catch (Exception e) {
-            this.log("Error in [" + this.getClass().getSimpleName() + "] at method ["+ Thread.currentThread().getStackTrace()[1].getMethodName() + "]", e);
-            response.sendRedirect("error");
+            try {
+                RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/user/login.jsp");
+                dispatcher.forward(request, response);
+            } catch (Exception e) {
+                this.log("Error in [" + this.getClass().getSimpleName() + "] at method ["+ Thread.currentThread().getStackTrace()[1].getMethodName() + "]", e);
+                response.sendRedirect("error");
+            }
         }
     }
 

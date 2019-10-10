@@ -29,14 +29,19 @@ public class NewUserController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        try {
-            RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/user/registration.jsp");
-            dispatcher.forward(request, response);
-        } catch (Exception e) {
-            this.log("Error in [" + this.getClass().getSimpleName() + "] at method ["+ Thread.currentThread().getStackTrace()[1].getMethodName() + "]", e);
-            response.sendRedirect("error");
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            response.sendRedirect("product/user");
         }
-
+        else {
+            try {
+                RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/user/registration.jsp");
+                dispatcher.forward(request, response);
+            } catch (Exception e) {
+                this.log("Error in [" + this.getClass().getSimpleName() + "] at method ["+ Thread.currentThread().getStackTrace()[1].getMethodName() + "]", e);
+                response.sendRedirect("error");
+            }
+        }
     }
 
     @Override

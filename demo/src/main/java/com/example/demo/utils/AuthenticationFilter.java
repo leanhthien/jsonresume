@@ -24,14 +24,18 @@ public class AuthenticationFilter implements Filter {
 
         HttpSession session = req.getSession(false);
 
-        this.context.log("RequestURI: " + req.getRequestURI());
-
         if (session == null) {
             this.context.log("Unauthorized access request");
             res.sendRedirect(req.getContextPath() + "/servlet/login");
         } else {
-            this.context.log("Continue direct");
-            filterChain.doFilter(servletRequest, servletResponse);
+            String uri = req.getRequestURI();
+            if (uri.contains("login") || uri.contains("logout") || uri.contains("registration")) {
+                res.sendRedirect(req.getContextPath() + "/servlet/product/user");
+            }
+            else {
+                this.context.log("Continue direct");
+                filterChain.doFilter(servletRequest, servletResponse);
+            }
         }
     }
 
