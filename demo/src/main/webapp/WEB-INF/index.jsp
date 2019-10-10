@@ -58,7 +58,7 @@
                     <a href="product/new">Create resume</a>
                   </c:if>
                   <c:if test="${!empty sessionScope.loginUser}">
-                    <a href="product/user"><c:out value="@{sessionScope.loginUser}" /></a>
+                    <a href="product/user"><c:out value="${sessionScope.loginUser}"/></a>
                   </c:if>
 
                   <c:if test="${!empty sessionScope.loginUser}">
