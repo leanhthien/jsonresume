@@ -23,7 +23,7 @@ public class UserServiceJdbcImpl implements UserService {
 
     Connection conn = null;
     PreparedStatement preparedStatement;
-    AppUser appUser = new AppUser();
+    AppUser appUser = null;
 
     try {
 
@@ -43,11 +43,7 @@ public class UserServiceJdbcImpl implements UserService {
         String user_name = rs.getString("user_name");
         String encrypted_password = rs.getString("encrypted_password");
         boolean enabled = rs.getBoolean("enabled");
-
-          appUser.setUserId(user_id);
-          appUser.setUserName(user_name);
-          appUser.setEncryptedPassword(encrypted_password);
-          appUser.setEnabled(enabled);
+          appUser = new AppUser(user_id, userName, encrypted_password, enabled);
       }
 
       rs.close();
@@ -55,14 +51,12 @@ public class UserServiceJdbcImpl implements UserService {
 
     } catch(Exception se){
       se.printStackTrace();
-      appUser = null;
     } finally {
       try {
         if (conn != null)
           conn.close();
       } catch (SQLException se) {
         se.printStackTrace();
-        appUser = null;
       }
     }
 
