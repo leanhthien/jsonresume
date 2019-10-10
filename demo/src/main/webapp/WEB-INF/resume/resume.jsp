@@ -1002,14 +1002,13 @@ body {
     page-break-before: always;
   }
 }
-
-
     </style>
 </head>
 
 <body itemscope="itemscope" itemtype="http://schema.org/Person">
-<div class="container-fluid">
 
+
+<div class="container-fluid">
     <div>
         <th:block th:include="/_navForVer3"></th:block>
     </div>

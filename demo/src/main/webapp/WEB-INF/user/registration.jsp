@@ -20,7 +20,7 @@
     <script type = "text/javascript">
 
              function validateForm() {
-                 var password = document.forms["registrationForm"]["encryptedPassword"].value;
+                 var password = document.forms["registrationForm"]["password"].value;
                  var retype = document.forms["registrationForm"]["retypePassword"].value;
                  if(password != retype) {
                      alert("Password and retype password must be the same!");
@@ -47,7 +47,7 @@
 
     <div>
         <c:set var="context" value="${pageContext.request.contextPath}" />
-        <form name="registrationForm" class="form-horizontal" action="@{${context}/servlet/registration}" method="post" onsubmit = "return validateForm()">
+        <form name="registrationForm" class="form-horizontal" action="${context}/servlet/registration" method="post" onsubmit = "return validateForm()">
 
             <div class="form-group d-flex justify-content-center">
                 <label class="col-sm-2 control-label">Username:</label>

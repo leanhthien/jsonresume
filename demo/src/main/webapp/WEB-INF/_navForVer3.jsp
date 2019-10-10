@@ -1,4 +1,4 @@
-<nav class="navbar navbar-inverse" xmlns:th="http://www.thymeleaf.org">
+<nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
             <a class="navbar-brand" href="/">Json Resume</a>

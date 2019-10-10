@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static com.example.demo.utils.Const.LOGIN_SESSION;
+
 @WebServlet(name="newProduct", urlPatterns = "/servlet/product/new")
 public class NewProductController extends HttpServlet {
 
@@ -36,6 +38,8 @@ public class NewProductController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+        String username = (String) request.getSession(false).getAttribute(LOGIN_SESSION);
+
         try {
 
             String name = request.getParameter("name");
@@ -49,7 +53,7 @@ public class NewProductController extends HttpServlet {
 
             Product newProduct = new Product(name, job_title, address, telephone, email, website, language, about);
 
-            newProduct = productService.saveOrUpdateProduct(newProduct, "dbadmin1");
+            newProduct = productService.saveOrUpdateProduct(newProduct, username);
 
             response.sendRedirect("detail?id="+ newProduct.getProductId());
         } catch (Exception e) {

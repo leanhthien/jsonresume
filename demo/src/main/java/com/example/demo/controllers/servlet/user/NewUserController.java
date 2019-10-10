@@ -5,6 +5,7 @@ import com.example.demo.services.ProductService;
 import com.example.demo.services.ProductServiceJdbcImpl;
 import com.example.demo.services.UserService;
 import com.example.demo.services.UserServiceJdbcImpl;
+import com.example.demo.utils.EncrytedPasswordUtils;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -44,30 +45,41 @@ public class NewUserController extends HttpServlet {
         try {
 
             String userName = request.getParameter("username");
-            String encryptedPassword = request.getParameter("password");
+            String password = request.getParameter("password");
             String retypePassword = request.getParameter("retypePassword");
 
-            if (encryptedPassword.equals(retypePassword)) {
+            if (password.equals(retypePassword)) {
+
+                String encryptedPassword = EncrytedPasswordUtils.encryptPassword(password);
+
                 AppUser appUser = new AppUser(userName, encryptedPassword);
-                userService.saveOrUpdateUser(appUser);
 
-                HttpSession oldSession = request.getSession(false);
 
-                if (oldSession != null) {
-                    oldSession.invalidate();
+                AppUser checkUser = userService.getUserByName(userName);
+
+                if (checkUser == null) {
+                    userService.saveOrUpdateUser(appUser);
+
+                    HttpSession oldSession = request.getSession(false);
+
+                    if (oldSession != null) {
+                        oldSession.invalidate();
+                    }
+
+                    HttpSession newSession = request.getSession(true);
+
+                    newSession.setMaxInactiveInterval(5*60);
+
+                    newSession.setAttribute(LOGIN_SESSION, userName);
+
+                    response.sendRedirect("product/user");
+                }
+                else {
+                    request.setAttribute(ERROR_RESPONSE,"User already exist!");
+                    RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/user/registration.jsp");
+                    dispatcher.forward(request, response);
                 }
 
-                HttpSession newSession = request.getSession(true);
-
-                newSession.setMaxInactiveInterval(5*60);
-
-                Cookie message = new Cookie("message", "JsonResume");
-
-                response.addCookie(message);
-
-                newSession.setAttribute(LOGIN_SESSION, userName);
-
-                response.sendRedirect("product/user");
             }
             else {
                 request.setAttribute(ERROR_RESPONSE,"Password and retype password must be the same!");

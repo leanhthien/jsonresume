@@ -31,10 +31,16 @@ public class ViewTopProductController extends HttpServlet {
 
             Product product = productService.getTopProduct(username);
 
-            request.setAttribute("product", product);
+            if (product != null) {
+                request.setAttribute("product", product);
 
-            RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/resume/resume.jsp");
-            dispatcher.forward(request, response);
+                RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/resume/resume.jsp");
+                dispatcher.forward(request, response);
+            }
+            else {
+                response.sendRedirect("error");
+            }
+
         } catch (Exception e) {
             this.log("Error in [" + this.getClass().getSimpleName() + "] at method ["+ Thread.currentThread().getStackTrace()[1].getMethodName() + "]", e);
             response.sendRedirect("/");

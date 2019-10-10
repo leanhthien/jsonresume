@@ -57,16 +57,13 @@ public class LoginController extends HttpServlet {
 
                 HttpSession oldSession = request.getSession(false);
 
-                if (oldSession != null)
+                if (oldSession != null) {
                     oldSession.invalidate();
+                }
 
                 HttpSession newSession = request.getSession(true);
 
                 newSession.setMaxInactiveInterval(5*60);
-
-                Cookie message = new Cookie("message", "JsonResume");
-
-                response.addCookie(message);
 
                 newSession.setAttribute(LOGIN_SESSION, userName);
 

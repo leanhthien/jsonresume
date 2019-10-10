@@ -77,7 +77,7 @@
     </c:if>
 
     <c:if test="${empty products}">
-    <div class="row">
+    <div class="row text-center" style="padding: 50px;">
         <p>You don't have any resume. Let make new one to start!</p>
     </div>
     </c:if>

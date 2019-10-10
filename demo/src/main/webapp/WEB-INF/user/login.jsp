@@ -47,12 +47,6 @@
                     <input type="password" name='password' class="form-control"/>
                 </div>
             </div>
-            <div class="form-check text-center">
-                <input class="form-check-input" type="checkbox" id="autoSizingCheck" name="remember-me">
-                <label class="form-check-label" for="autoSizingCheck">
-                    Remember me
-                </label>
-            </div>
             <div style="height: 10px;"></div>
 
             <div class="text-center">

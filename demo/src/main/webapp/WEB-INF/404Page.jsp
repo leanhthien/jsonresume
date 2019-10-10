@@ -26,7 +26,7 @@
     <div style="height: 75px;"></div>
 
     <h2 class="text-center">Page not found</h2>
-    <p class="text-center">The page you looking for is not exist</p>
+    <p class="text-center">The page you are looking for is not exist</p>
 
 </div>
 

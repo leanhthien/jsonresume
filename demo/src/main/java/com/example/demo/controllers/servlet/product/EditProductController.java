@@ -1,8 +1,8 @@
 package com.example.demo.controllers.servlet.product;
 
+import com.example.demo.entity.AppUser;
 import com.example.demo.entity.Product;
-import com.example.demo.services.ProductService;
-import com.example.demo.services.ProductServiceJdbcImpl;
+import com.example.demo.services.*;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,13 +12,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static com.example.demo.utils.Const.LOGIN_SESSION;
+
 @WebServlet(name="editProduct", urlPatterns = "/servlet/product/edit")
 public class EditProductController extends HttpServlet {
 
     private ProductService productService;
 
+    private UserService userService;
+
     public void init() {
         productService = new ProductServiceJdbcImpl();
+        userService = new UserServiceJdbcImpl();
     }
 
     @Override
@@ -27,12 +32,20 @@ public class EditProductController extends HttpServlet {
         try {
 
             long id = Long.parseLong(request.getParameter("id"));
+
+            String username = (String) request.getSession(false).getAttribute(LOGIN_SESSION);
             Product product = productService.getProductById(id);
 
-            request.setAttribute("product", product);
+            if (username.equals(product.getAppUser().getUserName())) {
+                request.setAttribute("product", product);
 
-            RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/resume/editResumeForm.jsp");
-            dispatcher.forward(request, response);
+                RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/resume/editResumeForm.jsp");
+                dispatcher.forward(request, response);
+            }
+            else {
+                response.sendRedirect("error");
+            }
+
         } catch (Exception e) {
             response.sendRedirect("/");
         }
