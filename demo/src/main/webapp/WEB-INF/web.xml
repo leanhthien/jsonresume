@@ -5,16 +5,6 @@
          id="WebApp_ID" version="3.0">
     <display-name>Json Resume</display-name>
 
-    <servlet>
-        <servlet-name>home</servlet-name>
-        <servlet-class>com.example.demo.controllers.servlet.MainController</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>home</servlet-name>
-        <url-pattern>/servlet/home</url-pattern>
-    </servlet-mapping>
-
     <filter>
         <filter-name>AuthenticationFilter</filter-name>
         <filter-class>com.example.demo.utils.AuthenticationFilter</filter-class>
