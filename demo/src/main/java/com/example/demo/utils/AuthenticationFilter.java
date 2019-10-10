@@ -28,14 +28,8 @@ public class AuthenticationFilter implements Filter {
             this.context.log("Unauthorized access request");
             res.sendRedirect(req.getContextPath() + "/servlet/login");
         } else {
-            String uri = req.getRequestURI();
-            if (uri.contains("login") || uri.contains("logout") || uri.contains("registration")) {
-                res.sendRedirect(req.getContextPath() + "/servlet/product/user");
-            }
-            else {
-                this.context.log("Continue direct");
-                filterChain.doFilter(servletRequest, servletResponse);
-            }
+            this.context.log("Continue direct");
+            filterChain.doFilter(servletRequest, servletResponse);
         }
     }
 

@@ -18,8 +18,9 @@ import java.io.StringWriter;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
-public class ProductServletControllerMockitoTest extends Mockito {
+public class ProductServletControllerMockitoTest extends ViewUserProductController {
 
     private ProductService productService = new ProductServiceJdbcImpl();
     private final long TOTAL_USER_HAS_PRODUCT = 1L;
@@ -63,18 +64,15 @@ public class ProductServletControllerMockitoTest extends Mockito {
 
     @Disabled
     @Test
-    public void testFullName() throws IOException {
-
-        when(request.getParameter("fn")).thenReturn("Vinod");
+    public void testFullName() throws IOException, ServletException {
 
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
 
         when(response.getWriter()).thenReturn(pw);
 
-        ViewUserProductController myServlet = new ViewUserProductController();
-        myServlet.init();
-//        myServlet.doGet(request, response);
+        doGet(request, response);
+
         String result = sw.getBuffer().toString().trim();
         assertEquals(result, "Full Name: Vinod Kashyap");
 
