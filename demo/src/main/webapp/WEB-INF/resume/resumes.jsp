@@ -31,7 +31,7 @@
                      src="https://s.gravatar.com/avatar/7e6be1e623fb85adde3462fa8587caf2?s=100&amp;r=pg&amp;d=mm"
                      itemprop="image"/>
               </div>
-              <div class="name-and-profession ">
+              <div class="name-and-profession" style="padding-top: 10px;">
                 <h5><c:if test="${!empty sessionScope.loginUser}"><c:out value="${sessionScope.loginUser}" /></c:if></h5>
               </div>
           </span>
@@ -52,8 +52,9 @@
          <div class="modal-body">
 
            <p style="padding-bottom: 10px; padding-top: 20px;">Share this link to another for showing your resume:</p>
+
             <c:set var="context" value="${pageContext.request.contextPath}" />
-            <input type="text" class="form-control" value="<c:if test='${!empty sessionScope.loginUser}'>${context}/servlet/view?name=${sessionScope.loginUser}</c:if>"/>
+            <input type="text" class="form-control" value="<c:if test='${!empty sessionScope.loginUser}'>${domain}${context}/servlet/view?name=${sessionScope.loginUser}</c:if>"/>
             <div class="text-center" style="padding: 20px;">
             <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
             </div>

@@ -70,7 +70,10 @@ public class LoginController extends HttpServlet {
 
                 newSession.setAttribute(LOGIN_SESSION, userName);
 
-                response.sendRedirect(prevLink.orElse("/"));
+                if (prevLink.toString().contains("registration") || prevLink.toString().contains("login"))
+                    response.sendRedirect("product/user");
+                else
+                    response.sendRedirect(prevLink.orElse("/"));
 
             }
             else {

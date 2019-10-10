@@ -24,7 +24,7 @@
           </li>
           <li class="nav-item">
           <c:if test="${!empty sessionScope.loginUser}">
-              <a class="nav-link" href="${pageContext.request.contextPath}/servlet/product/new">Create Resume</a>
+              <a class="nav-link" href="${pageContext.request.contextPath}/servlet/product/new">Create resume</a>
           </c:if>
           </li>
           <li class="nav-item">

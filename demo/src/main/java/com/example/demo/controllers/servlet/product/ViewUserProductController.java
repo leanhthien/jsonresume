@@ -40,6 +40,10 @@ public class ViewUserProductController extends HttpServlet {
                     dispatcher.forward(request, response);
                 }
                 else {
+
+                    String domain = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
+
+                    request.setAttribute("domain", domain);
                     request.setAttribute("products", products);
                     RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/resume/resumes.jsp");
                     dispatcher.forward(request, response);
