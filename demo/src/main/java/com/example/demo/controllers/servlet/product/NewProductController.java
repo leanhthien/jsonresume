@@ -30,7 +30,7 @@ public class NewProductController extends HttpServlet {
             RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/resume/resumeForm.jsp");
             dispatcher.forward(request, response);
         } catch (Exception e) {
-            response.sendRedirect("/");
+            response.sendRedirect("error");
         }
 
     }
@@ -57,7 +57,7 @@ public class NewProductController extends HttpServlet {
 
             response.sendRedirect("detail?id="+ newProduct.getProductId());
         } catch (Exception e) {
-            response.sendRedirect("/");
+            response.sendRedirect("error");
         }
     }
 }

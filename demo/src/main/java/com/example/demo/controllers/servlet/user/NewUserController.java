@@ -34,7 +34,7 @@ public class NewUserController extends HttpServlet {
             dispatcher.forward(request, response);
         } catch (Exception e) {
             this.log("Error in [" + this.getClass().getSimpleName() + "] at method ["+ Thread.currentThread().getStackTrace()[1].getMethodName() + "]", e);
-            response.sendRedirect("/");
+            response.sendRedirect("error");
         }
 
     }
@@ -89,7 +89,7 @@ public class NewUserController extends HttpServlet {
 
         } catch (Exception e) {
             this.log("Error in [" + this.getClass().getSimpleName() + "] at method ["+ Thread.currentThread().getStackTrace()[1].getMethodName() + "]", e);
-            response.sendRedirect("/");
+            response.sendRedirect("error");
         }
     }
 }

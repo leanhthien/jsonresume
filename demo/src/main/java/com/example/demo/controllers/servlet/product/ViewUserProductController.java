@@ -34,23 +34,20 @@ public class ViewUserProductController extends HttpServlet {
             try {
                 List<Product> products = productService.listAllProductsByUser(username);
 
-                if(products == null) {
+                if (products == null) {
                     request.setAttribute(ERROR_RESPONSE, "Something went wrong!");
-                    RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/index.jsp");
-                    dispatcher.forward(request, response);
                 }
                 else {
-
                     String domain = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
-
                     request.setAttribute("domain", domain);
                     request.setAttribute("products", products);
-                    RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/resume/resumes.jsp");
-                    dispatcher.forward(request, response);
                 }
+                RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/resume/resumes.jsp");
+                dispatcher.forward(request, response);
+
             } catch (Exception e) {
                 this.log("Error in [" + this.getClass().getSimpleName() + "] at method ["+ Thread.currentThread().getStackTrace()[1].getMethodName() + "]", e);
-                response.sendRedirect("/");
+                response.sendRedirect("error");
             }
         }
     }

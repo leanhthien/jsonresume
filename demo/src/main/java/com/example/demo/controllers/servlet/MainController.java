@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name="welcome", urlPatterns = {"/servlet/home", "/servlet/home/", "/servlet", "/servlet/"})
+@WebServlet(name="welcome", urlPatterns = {"/servlet/home", "/servlet/"})
 public class MainController extends HttpServlet {
 
     @Override
@@ -19,7 +19,7 @@ public class MainController extends HttpServlet {
             RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/index.jsp");
             dispatcher.forward(request, response);
         } catch (Exception e) {
-            response.sendRedirect("/");
+            response.sendRedirect("error");
         }
 
     }

@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>List Products</title>
+    <title>List User Products</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">

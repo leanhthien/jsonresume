@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static com.example.demo.utils.Const.ERROR_RESPONSE;
+
 @WebServlet(name="deleteProduct", urlPatterns = "/servlet/product/delete")
 public class DeleteProductController extends HttpServlet {
 
@@ -24,15 +26,15 @@ public class DeleteProductController extends HttpServlet {
 
         try {
             long productId = Long.parseLong(request.getParameter("id"));
-
             String status = productService.deleteProduct(productId);
+
             if (status.equals("Fail"))
-                request.setAttribute("error","error");
+                request.setAttribute(ERROR_RESPONSE,"Can not delete resume!");
 
             response.sendRedirect("user");
 
         } catch (Exception e) {
-            response.sendRedirect("/");
+            response.sendRedirect("error");
         }
 
     }

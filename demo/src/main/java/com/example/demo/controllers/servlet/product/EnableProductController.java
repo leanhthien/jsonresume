@@ -12,6 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static com.example.demo.utils.Const.ERROR_RESPONSE;
+import static com.example.demo.utils.Const.LOGIN_SESSION;
+
 @WebServlet(name="enableProduct", urlPatterns = "/servlet/product/enable")
 public class EnableProductController extends HttpServlet {
 
@@ -26,16 +29,16 @@ public class EnableProductController extends HttpServlet {
 
         try {
             long productId = Long.parseLong(request.getParameter("id"));
-
-            Product product = productService.setEnabledProduct(productId, "dbadmin1");
+            String username = (String) request.getSession(false).getAttribute(LOGIN_SESSION);
+            Product product = productService.setEnabledProduct(productId, username);
 
             if (product == null)
-                request.setAttribute("error","error");
+                request.setAttribute(ERROR_RESPONSE,"Can not enable top resume");
 
             response.sendRedirect("user");
 
         } catch (Exception e) {
-            response.sendRedirect("/");
+            response.sendRedirect("error");
         }
 
     }

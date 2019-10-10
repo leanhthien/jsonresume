@@ -16,7 +16,6 @@ public class ErrorController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         try {
-
             RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/404Page.jsp");
             dispatcher.forward(request, response);
         } catch (Exception e) {

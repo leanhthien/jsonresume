@@ -29,13 +29,17 @@ public class ViewDetailProductController extends HttpServlet {
             long id = Long.parseLong(request.getParameter("id"));
             Product product = productService.getProductById(id);
 
-            request.setAttribute("product", product);
+            if (product != null) {
+                request.setAttribute("product", product);
+                RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/resume/resume.jsp");
+                dispatcher.forward(request, response);
+            }
+            else
+                response.sendRedirect("error");
 
-            RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/resume/resume.jsp");
-            dispatcher.forward(request, response);
         } catch (Exception e) {
             this.log("Error in [" + this.getClass().getSimpleName() + "] at method ["+ Thread.currentThread().getStackTrace()[1].getMethodName() + "]", e);
-            response.sendRedirect("/");
+            response.sendRedirect("error");
         }
 
     }

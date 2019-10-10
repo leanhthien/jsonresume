@@ -43,7 +43,7 @@ public class ViewTopProductController extends HttpServlet {
 
         } catch (Exception e) {
             this.log("Error in [" + this.getClass().getSimpleName() + "] at method ["+ Thread.currentThread().getStackTrace()[1].getMethodName() + "]", e);
-            response.sendRedirect("/");
+            response.sendRedirect("error");
         }
     }
 

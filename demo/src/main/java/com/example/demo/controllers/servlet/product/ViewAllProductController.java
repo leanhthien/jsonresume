@@ -16,6 +16,8 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
+import static com.example.demo.utils.Const.ERROR_RESPONSE;
+
 @WebServlet(name="listAllProduct", urlPatterns = "/servlet/product/all")
 public class ViewAllProductController extends HttpServlet {
 
@@ -32,14 +34,14 @@ public class ViewAllProductController extends HttpServlet {
             List<Product> products = productService.listAllProducts();
 
             if(products == null)
-                request.setAttribute("error", true);
+                request.setAttribute(ERROR_RESPONSE, "Something went wrong");
             else
                 request.setAttribute("products", products);
 
             RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/resume/allResumes.jsp");
             dispatcher.forward(request, response);
         } catch (Exception e) {
-            response.sendRedirect("/");
+            response.sendRedirect("error");
         }
 
     }

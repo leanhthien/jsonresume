@@ -32,22 +32,25 @@ public class EditProductController extends HttpServlet {
         try {
 
             long id = Long.parseLong(request.getParameter("id"));
-
             String username = (String) request.getSession(false).getAttribute(LOGIN_SESSION);
             Product product = productService.getProductById(id);
 
-            if (username.equals(product.getAppUser().getUserName())) {
-                request.setAttribute("product", product);
+            if (product != null) {
+                if (username.equals(product.getAppUser().getUserName())) {
+                    request.setAttribute("product", product);
 
-                RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/resume/editResumeForm.jsp");
-                dispatcher.forward(request, response);
+                    RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/resume/editResumeForm.jsp");
+                    dispatcher.forward(request, response);
+                }
+                else {
+                    response.sendRedirect("error");
+                }
             }
             else {
                 response.sendRedirect("error");
             }
-
         } catch (Exception e) {
-            response.sendRedirect("/");
+            response.sendRedirect("error");
         }
 
     }
@@ -57,6 +60,7 @@ public class EditProductController extends HttpServlet {
 
         try {
 
+            String username = (String) request.getSession(false).getAttribute(LOGIN_SESSION);
             long   productId = Long.parseLong(request.getParameter("productId"));
             String name = request.getParameter("name");
             String job_title = request.getParameter("jobTitle");
@@ -70,11 +74,11 @@ public class EditProductController extends HttpServlet {
             Product editProduct = new Product(name, job_title, address, telephone, email, website, language, about);
             editProduct.setProductId(productId);
 
-            editProduct = productService.saveOrUpdateProduct(editProduct, "dbadmin1");
+            editProduct = productService.saveOrUpdateProduct(editProduct, username);
 
             response.sendRedirect("detail?id="+ editProduct.getProductId());
         } catch (Exception e) {
-            response.sendRedirect("/");
+            response.sendRedirect("error");
         }
     }
 }

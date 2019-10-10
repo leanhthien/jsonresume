@@ -1007,11 +1007,9 @@ body {
 
 <body itemscope="itemscope" itemtype="http://schema.org/Person">
 
+<jsp:include page="../_navForVer3.jsp"></jsp:include>
 
 <div class="container-fluid">
-    <div>
-        <th:block th:include="/_navForVer3"></th:block>
-    </div>
 
     <div class="row main clearfix">
         <a class="js-floating-nav-trigger floating-nav-trigger" href="#">

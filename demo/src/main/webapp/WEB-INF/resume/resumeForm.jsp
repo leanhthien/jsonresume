@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Spring Core Online Tutorial - Product Form</title>
+    <title>New Product Form</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
