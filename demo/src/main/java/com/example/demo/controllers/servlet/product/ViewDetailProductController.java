@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+import static com.example.demo.utils.Const.LOGIN_SESSION;
+
 @WebServlet(name="viewDetailProduct", urlPatterns = "/servlet/product/detail")
 public class ViewDetailProductController extends HttpServlet {
 
@@ -26,11 +28,14 @@ public class ViewDetailProductController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         try {
+            String username = (String) request.getSession(false).getAttribute(LOGIN_SESSION);
             long id = Long.parseLong(request.getParameter("id"));
             Product product = productService.getProductById(id);
 
             if (product != null) {
                 request.setAttribute("product", product);
+                if (product.getAppUser().getUserName().equals(username))
+                    request.setAttribute("isEditable", true);
                 RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/resume/resume.jsp");
                 dispatcher.forward(request, response);
             }

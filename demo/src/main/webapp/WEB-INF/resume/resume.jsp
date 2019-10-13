@@ -1052,6 +1052,15 @@
                             </div>
                         </div>
                         <hr/>
+
+                        <c:if test="${!empty isEditable}">
+                        <div class="text-center">
+                            <div>
+                                  <a href="${pageContext.request.contextPath}/servlet/product/edit?id=<c:out value='${product.productId}'/>" class="btn btn-info" role="button">Edit</a>
+                            </div>
+                        </div>
+                        </c:if>
+
                     </div>
                 </section>
                 <section class="col-md-9 card-wrapper pull-right">
