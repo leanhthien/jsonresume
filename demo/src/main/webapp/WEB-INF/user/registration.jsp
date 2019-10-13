@@ -19,16 +19,16 @@
 
     <script type = "text/javascript">
 
-             function validateForm() {
-                 var password = document.forms["registrationForm"]["password"].value;
-                 var retype = document.forms["registrationForm"]["retypePassword"].value;
-                 if(password != retype) {
-                     alert("Password and retype password must be the same!");
-                     return false;
-                 }
-                 return true;
-             }
-          </script>
+         function validateForm() {
+              var password = document.forms["registrationForm"]["password"].value;
+              var retype = document.forms["registrationForm"]["retypePassword"].value;
+              if(password != retype) {
+                   $( "div.samePassword" ).show();
+                   return false;
+              }
+              return true;
+          }
+    </script>
 </head>
 <body>
 <div class="container">
@@ -45,7 +45,7 @@
         </div>
     </c:if>
 
-    <div>
+    <div style="padding-bottom: 20px;">
         <c:set var="context" value="${pageContext.request.contextPath}" />
         <form name="registrationForm" class="form-horizontal" action="${context}/servlet/registration" method="post" onsubmit = "return validateForm()">
 
@@ -72,12 +72,16 @@
             </div>
         </form>
 
-        <div style="height: 20px;"></div>
-
-        <div class="text-center">
-            Already have an account? Let <a href="login">sign in</a>
-        </div>
     </div>
+
+    <div class="samePassword" style="padding-bottom: 20px; display: none;">
+        <div class='alert alert-danger' role='alert'>Password and retype password must be the same!</div>
+    </div>
+
+    <div class="text-center">
+         Already have an account? Let <a href="login">sign in</a>
+    </div>
+
 </div>
 
 </body>

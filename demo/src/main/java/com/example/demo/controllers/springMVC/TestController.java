@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.List;
 
-//@Controller
+@Controller
 //@RequestMapping(path="/demo")
 public class TestController {
 

@@ -25,16 +25,17 @@
         <form class="form-horizontal" action="<%= request.getContextPath() %>/servlet/product/edit" method="post">
 
             <input type="hidden" name="productId" value="${product.productId}"/>
+            <input type="hidden" name="enabled" value="${product.enabled}"/>
             <div class="form-group">
                     <label class="col-sm-2 control-label">Name:</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" name="name" value="${product.name}"/>
+                        <input type="text" class="form-control" name="name" value="${product.name}" required/>
                     </div>
             </div>
             <div class="form-group">
                     <label class="col-sm-2 control-label">Job Title:</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" name="jobTitle" value="${product.jobTitle}"/>
+                        <input type="text" class="form-control" name="jobTitle" value="${product.jobTitle}" required/>
                     </div>
             </div>   
             <div class="form-group">
@@ -73,10 +74,16 @@
                         <textarea class="form-control" rows="3" name="about" value="${product.about}"></textarea>
                     </div>
             </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Work Experience:</label>
+                <div class="col">
+                    <textarea class="form-control" rows="5" name="workExperience" value="${product.workExperience}"></textarea>
+                </div>
+            </div>
 
             <div class="text-center">
                 <button type="submit" class="btn btn-info">Submit</button>
-                <a href="/" class="btn btn-danger" role="button">Cancel</a>
+                <a href="user" class="btn btn-danger" role="button">Cancel</a>
             </div>
         </form>
     </div>

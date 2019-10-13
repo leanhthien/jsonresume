@@ -12,7 +12,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
     <link href="../static/css/spring-core.css"
-          th:href="@{css/spring-core.css}" rel="stylesheet" media="screen"/>
+          href="@{css/spring-core.css}" rel="stylesheet" media="screen"/>
 </head>
 <body>
 
@@ -21,18 +21,12 @@
 <div class="container">
 
     <c:if test="${!empty errorResponse}">
-            <div class="alert alert-danger" role="alert">
-                 <c:out value="${errorResponse}" />
-            </div>
+        <div class="alert alert-danger" role="alert">
+             <c:out value="${errorResponse}" />
+        </div>
     </c:if>
 
-    <c:if test="${empty products}">
-    <div class="row">
-        <p>You don't have any resume. Let make new one to start!</p>
-    </div>
-    </c:if>
-
-    <div >
+    <div>
         <div class="px-3" >
             <h2>All Resume List</h2>
         </div>

@@ -126,6 +126,7 @@ public class ProductServiceJUnitTest {
         product.setWebsite("http://social.com/eugune");
         product.setLanguage("English");
         product.setAbout("My name is Albert, and I’m a Computer Engineer. My job is to provide job seekers with expert advice on career-related topics. I read a lot and consult recruiting professionals so you don’t have to. I show you how to hack the recruitment process, create a job-winning resume, ace the job interview, and... introduce yourself, among others.");
+        product.setWorkExperience("Three years at IBM");
 
         Product newProduct = productService.saveOrUpdateProduct(product, userName);
 

@@ -27,7 +27,7 @@ public class NewProductController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         try {
-            RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/resume/resumeForm.jsp");
+            RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/resume/newResumeForm.jsp");
             dispatcher.forward(request, response);
         } catch (Exception e) {
             response.sendRedirect("error");
@@ -50,8 +50,9 @@ public class NewProductController extends HttpServlet {
             String website = request.getParameter("website");
             String language = request.getParameter("language");
             String about = request.getParameter("about");
+            String workExperience = request.getParameter("workExperience");
 
-            Product newProduct = new Product(name, job_title, address, telephone, email, website, language, about);
+            Product newProduct = new Product(name, job_title, address, telephone, email, website, language, about, workExperience);
 
             newProduct = productService.saveOrUpdateProduct(newProduct, username);
 

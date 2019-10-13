@@ -6,7 +6,6 @@ import com.example.demo.services.UserServiceJdbcImpl;
 import com.example.demo.utils.EncrytedPasswordUtils;
 
 import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
@@ -66,6 +65,12 @@ public class LoginController extends HttpServlet {
                 newSession.setMaxInactiveInterval(5*60);
 
                 newSession.setAttribute(LOGIN_SESSION, userName);
+
+                Cookie loginCookie = new Cookie("user", userName);
+
+                loginCookie.setMaxAge(30*60);
+
+                response.addCookie(loginCookie);
 
                 if (prevLink.toString().contains("registration")
                         || prevLink.toString().contains("login")

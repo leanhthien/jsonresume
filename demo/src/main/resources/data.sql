@@ -24,10 +24,10 @@ values (2, 'dbuser1', 2);
 
 ---
 
-insert into PRODUCT (ABOUT, ADDRESS, USER_ID, EMAIL, JOB_TITLE, LANGUAGE, NAME, TELEPHONE, WEBSITE, ENABLED)
-values ('Something about you', '123 WallStreet', 1, 'john@mail.com', 'Engineer', 'English', 'John', '01234567', 'john@site.com', 1);
+insert into PRODUCT (ABOUT, ADDRESS, USER_ID, EMAIL, JOB_TITLE, LANGUAGE, NAME, TELEPHONE, WEBSITE, WORK_EXPERIENCE, ENABLED)
+values ('Something about you', '123 WallStreet', 1, 'john@mail.com', 'Engineer', 'English', 'John', '01234567', 'john@site.com', 'Three years at IBM', 1);
 
-insert into PRODUCT (ABOUT, ADDRESS, USER_ID, EMAIL, JOB_TITLE, LANGUAGE, NAME, TELEPHONE, WEBSITE, ENABLED)
-values ('Something about you', '456 Patrict', 1, 'alex@mail.com', 'Worker', 'English', 'Alex', '099999999', 'alex@site.com', 0);
+insert into PRODUCT (ABOUT, ADDRESS, USER_ID, EMAIL, JOB_TITLE, LANGUAGE, NAME, TELEPHONE, WEBSITE, WORK_EXPERIENCE, ENABLED)
+values ('Something about you', '456 Patrict', 1, 'alex@mail.com', 'Worker', 'English', 'Alex', '099999999', 'alex@site.com', 'Three years at IBM', 0);
 
 ---

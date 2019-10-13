@@ -26,6 +26,12 @@
     <div style="height: 75px;"></div>
 
     <h2 class="text-center">Page not found</h2>
+
+    <c:if test="${!empty errorResponse}">
+            <div class="alert alert-danger" role="alert">
+                 <c:out value="${errorResponse}" />
+            </div>
+    </c:if>
     <p class="text-center">The page you are looking for is not exist</p>
 
 </div>

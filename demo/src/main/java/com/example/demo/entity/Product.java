@@ -23,6 +23,9 @@ public class Product {
     private String website;
     private String language;
     private String about;
+
+    @Column(name = "work_experience", nullable = false)
+    private String workExperience;
     private boolean enabled;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -52,6 +55,19 @@ public class Product {
         this.about = about;
     }
 
+    public Product(String name, String jobTitle, String address, String telephone, String email,
+                   String website, String language, String about, String workExperience) {
+        this.name = name;
+        this.jobTitle = jobTitle;
+        this.address = address;
+        this.telephone = telephone;
+        this.email = email;
+        this.website = website;
+        this.language = language;
+        this.about = about;
+        this.workExperience = workExperience;
+    }
+
     public Product(Long productId, String name, String jobTitle, String address, String telephone, String email,
                    String website, String language, String about, boolean enabled) {
         this.productId = productId;
@@ -63,6 +79,21 @@ public class Product {
         this.website = website;
         this.language = language;
         this.about = about;
+        this.enabled = enabled;
+    }
+
+    public Product(Long productId, String name, String jobTitle, String address, String telephone, String email,
+                   String website, String language, String about, String workExperience, boolean enabled) {
+        this.productId = productId;
+        this.name = name;
+        this.jobTitle = jobTitle;
+        this.address = address;
+        this.telephone = telephone;
+        this.email = email;
+        this.website = website;
+        this.language = language;
+        this.about = about;
+        this.workExperience = workExperience;
         this.enabled = enabled;
     }
 
@@ -136,6 +167,14 @@ public class Product {
 
     public void setAbout(String about) {
         this.about = about;
+    }
+
+    public String getWorkExperience() {
+        return workExperience;
+    }
+
+    public void setWorkExperience(String workExperience) {
+        this.workExperience = workExperience;
     }
 
     public AppUser getAppUser() {

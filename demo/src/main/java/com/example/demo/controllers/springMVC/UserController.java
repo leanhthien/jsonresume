@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.security.Principal;
 
-//@Controller
+@Controller
 public class UserController {
 //    private UserService userService;
 //

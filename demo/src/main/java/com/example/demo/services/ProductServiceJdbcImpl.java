@@ -2,13 +2,15 @@ package com.example.demo.services;
 
 import com.example.demo.entity.AppUser;
 import com.example.demo.entity.Product;
-import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.demo.utils.Const.FAIL;
+import static com.example.demo.utils.Const.SUCCESS;
 
 @Service
 @Profile("jdbc")
@@ -18,7 +20,6 @@ public class ProductServiceJdbcImpl implements ProductService {
   private static final String DB_URL = "jdbc:mysql://localhost:3306/myDb";
   private static final String USER = "root";
   private static final String PASS = "0987654321";
-  private static final int INVALID_ID = -1;
 
   @Override
   public List<Product> listAllProducts() {
@@ -157,10 +158,11 @@ public class ProductServiceJdbcImpl implements ProductService {
         String website = rs.getString("website");
         String language = rs.getString("language");
         String about = rs.getString("about");
+        String work_experience = rs.getString("work_experience");
         boolean enabled = rs.getBoolean("enabled");
         long user_id = rs.getLong("user_id");
 
-        product = new Product(product_id, name, job_title, address, telephone, email, website, language, about, enabled);
+        product = new Product(product_id, name, job_title, address, telephone, email, website, language, about, work_experience, enabled);
 
         sql =   "SELECT USER_NAME " +
                 "FROM APP_USER " +
@@ -241,9 +243,10 @@ public class ProductServiceJdbcImpl implements ProductService {
           String website = rs.getString("website");
           String language = rs.getString("language");
           String about = rs.getString("about");
+          String work_experience = rs.getString("work_experience");
           boolean enabled = rs.getBoolean("enabled");
 
-          product = new Product(product_id, name, job_title, address, telephone, email, website, language, about, enabled);
+          product = new Product(product_id, name, job_title, address, telephone, email, website, language, about, work_experience, enabled);
           product.setAppUser(appUser);
         }
       }
@@ -308,14 +311,14 @@ public class ProductServiceJdbcImpl implements ProductService {
         amountAllUserProduct = rs.getInt(1);
       }
 
-      String saveSQL =  "INSERT INTO PRODUCT (NAME, JOB_TITLE, ADDRESS, TELEPHONE, EMAIL, WEBSITE, LANGUAGE, ABOUT, ENABLED, USER_ID) " +
-                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+      String saveSQL =  "INSERT INTO PRODUCT (NAME, JOB_TITLE, ADDRESS, TELEPHONE, EMAIL, WEBSITE, LANGUAGE, ABOUT, WORK_EXPERIENCE, ENABLED, USER_ID) " +
+                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-      String saveWithIdSQL =  "INSERT INTO PRODUCT (NAME, JOB_TITLE, ADDRESS, TELEPHONE, EMAIL, WEBSITE, LANGUAGE, ABOUT, ENABLED, USER_ID, PRODUCT_ID) " +
-                              "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+      String saveWithIdSQL =  "INSERT INTO PRODUCT (NAME, JOB_TITLE, ADDRESS, TELEPHONE, EMAIL, WEBSITE, LANGUAGE, ABOUT, WORK_EXPERIENCE, ENABLED, USER_ID, PRODUCT_ID) " +
+                              "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
       String updateSQL =  "UPDATE PRODUCT SET " +
-                          "NAME = ?, JOB_TITLE = ?, ADDRESS = ?, TELEPHONE = ?, EMAIL = ?, WEBSITE = ?, LANGUAGE = ?, ABOUT = ? " +
+                          "NAME = ?, JOB_TITLE = ?, ADDRESS = ?, TELEPHONE = ?, EMAIL = ?, WEBSITE = ?, LANGUAGE = ?, ABOUT = ?, WORK_EXPERIENCE = ? " +
                           "WHERE PRODUCT_ID = ?";
 
       if (product.getProductId() == null) {
@@ -348,11 +351,13 @@ public class ProductServiceJdbcImpl implements ProductService {
       preparedStatement.setString(6, product.getWebsite());
       preparedStatement.setString(7, product.getLanguage());
       preparedStatement.setString(8, product.getAbout());
+      preparedStatement.setString(9, product.getWorkExperience());
 
       int effectedRow;
+      // Create new product
       if (product.getProductId() == null) {
-        preparedStatement.setBoolean(9, amountAllUserProduct == 0);
-        preparedStatement.setLong(10, user_id);
+        preparedStatement.setBoolean(10, amountAllUserProduct == 0);
+        preparedStatement.setLong(11, user_id);
 
         effectedRow = preparedStatement.executeUpdate();
 
@@ -365,14 +370,16 @@ public class ProductServiceJdbcImpl implements ProductService {
           }
         }
       }
+      // Create product with id
       else if (amountProductById == 0) {
-        preparedStatement.setBoolean(9, product.isEnabled());
-        preparedStatement.setLong(10, product.getAppUser().getUserId());
-        preparedStatement.setLong(11, product.getProductId());
+        preparedStatement.setBoolean(10, product.isEnabled());
+        preparedStatement.setLong(11, product.getAppUser().getUserId());
+        preparedStatement.setLong(12, product.getProductId());
         effectedRow = preparedStatement.executeUpdate();
       }
+      // Update product
       else {
-        preparedStatement.setLong(9, product.getProductId());
+        preparedStatement.setLong(10, product.getProductId());
         effectedRow = preparedStatement.executeUpdate();
       }
 
@@ -479,7 +486,7 @@ public class ProductServiceJdbcImpl implements ProductService {
   public String deleteProduct(Long id){
     Connection conn = null;
     PreparedStatement preparedStatement;
-    String status = "Fail";
+    String status = FAIL;
     try {
 
       Class.forName(JDBC_DRIVER);
@@ -495,20 +502,18 @@ public class ProductServiceJdbcImpl implements ProductService {
       int effectedRow = preparedStatement.executeUpdate();
 
       if(effectedRow != 0)
-        status = "Success";
+        status = SUCCESS;
 
       preparedStatement.close();
 
     } catch(Exception se){
       se.printStackTrace();
-      status = "Fail";
     } finally {
       try {
         if (conn != null)
           conn.close();
       } catch (SQLException se) {
         se.printStackTrace();
-        status = "Fail";
       }
     }
     return status;

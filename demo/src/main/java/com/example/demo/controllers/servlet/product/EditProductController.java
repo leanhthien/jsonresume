@@ -19,18 +19,14 @@ public class EditProductController extends HttpServlet {
 
     private ProductService productService;
 
-    private UserService userService;
-
     public void init() {
         productService = new ProductServiceJdbcImpl();
-        userService = new UserServiceJdbcImpl();
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         try {
-
             long id = Long.parseLong(request.getParameter("id"));
             String username = (String) request.getSession(false).getAttribute(LOGIN_SESSION);
             Product product = productService.getProductById(id);
@@ -59,7 +55,6 @@ public class EditProductController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         try {
-
             String username = (String) request.getSession(false).getAttribute(LOGIN_SESSION);
             long   productId = Long.parseLong(request.getParameter("productId"));
             String name = request.getParameter("name");
@@ -70,8 +65,9 @@ public class EditProductController extends HttpServlet {
             String website = request.getParameter("website");
             String language = request.getParameter("language");
             String about = request.getParameter("about");
-
-            Product editProduct = new Product(name, job_title, address, telephone, email, website, language, about);
+            String workExperience = request.getParameter("workExperience");
+            boolean enabled = Boolean.parseBoolean(request.getParameter("enabled"));
+            Product editProduct = new Product(productId, name, job_title, address, telephone, email, website, language, about, workExperience, enabled);
             editProduct.setProductId(productId);
 
             editProduct = productService.saveOrUpdateProduct(editProduct, username);

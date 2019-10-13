@@ -6,6 +6,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+import static com.example.demo.utils.Const.LOGIN_SESSION;
+
 public class AuthenticationFilter implements Filter {
 
     private ServletContext context;
@@ -24,10 +26,11 @@ public class AuthenticationFilter implements Filter {
 
         HttpSession session = req.getSession(false);
 
-        if (session == null) {
+        if (session == null || session.getAttribute(LOGIN_SESSION) == null) {
             this.context.log("Unauthorized access request");
             res.sendRedirect(req.getContextPath() + "/servlet/login");
-        } else {
+        }
+        else {
             this.context.log("Continue direct");
             filterChain.doFilter(servletRequest, servletResponse);
         }

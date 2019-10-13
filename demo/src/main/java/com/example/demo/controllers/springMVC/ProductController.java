@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.List;
 
-//@Controller
+@Controller
 public class ProductController {
 
 //    private ProductService productService;

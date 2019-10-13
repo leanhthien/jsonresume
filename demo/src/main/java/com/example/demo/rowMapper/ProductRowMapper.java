@@ -22,6 +22,7 @@ public class ProductRowMapper implements RowMapper<Product> {
     product.setWebsite(resultSet.getString("website"));
     product.setLanguage(resultSet.getString("language"));
     product.setAbout(resultSet.getString("about"));
+    product.setWorkExperience(resultSet.getString("work_experience"));
     product.setEnabled(resultSet.getBoolean("enabled"));
     appUser.setUserId(resultSet.getLong("user_id"));
 
