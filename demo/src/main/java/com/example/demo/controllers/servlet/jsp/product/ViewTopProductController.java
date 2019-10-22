@@ -1,8 +1,10 @@
-package com.example.demo.controllers.servlet.product;
+package com.example.demo.controllers.servlet.jsp.product;
 
 import com.example.demo.entity.Product;
 import com.example.demo.services.ProductService;
 import com.example.demo.services.ProductServiceJdbcImpl;
+import com.google.gson.Gson;
+import org.springframework.context.annotation.Profile;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,10 +14,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static com.example.demo.utils.Const.LOGIN_SESSION;
-
+@Profile("api")
 @WebServlet(name="viewDetailTopProduct", urlPatterns = "/servlet/view")
 public class ViewTopProductController extends HttpServlet {
+
+    private Gson gson = new Gson();
+
     private ProductService productService;
 
     public void init() {
@@ -33,8 +37,7 @@ public class ViewTopProductController extends HttpServlet {
 
             if (product != null) {
                 request.setAttribute("product", product);
-
-                RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/resume/resume.jsp");
+                RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/jsp/resume/resume.jsp");
                 dispatcher.forward(request, response);
             }
             else {

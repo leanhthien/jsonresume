@@ -2,6 +2,7 @@ package com.example.demo.services;
 
 import com.example.demo.entity.AppRole;
 import com.example.demo.entity.AppUser;
+import com.example.demo.entity.Token;
 import com.example.demo.entity.UserRole;
 import com.example.demo.repository.RoleRepository;
 import com.example.demo.repository.UserRoleRepository;
@@ -49,6 +50,21 @@ public class UserServiceImpl implements UserService {
         } else {
             throw new RuntimeException("User can't be null");
         }
+    }
+
+    @Override
+    public String validateToken(String token, Long userId) {
+        return null;
+    }
+
+    @Override
+    public Token setToken(AppUser user) {
+        return null;
+    }
+
+    @Override
+    public String deleteToken(String token) {
+        return null;
     }
 
     @Override

@@ -1,23 +1,22 @@
-package com.example.demo.controllers.servlet.product;
+package com.example.demo.controllers.servlet.jsp.product;
 
 import com.example.demo.entity.Product;
 import com.example.demo.services.ProductService;
 import com.example.demo.services.ProductServiceJdbcImpl;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
-import static com.example.demo.utils.Const.ERROR_RESPONSE;
+import static com.example.demo.utils.ConstUtils.ERROR_RESPONSE;
 
+@Profile("api")
 @WebServlet(name="listAllProduct", urlPatterns = "/servlet/product/all")
 public class ViewAllProductController extends HttpServlet {
 
@@ -38,7 +37,7 @@ public class ViewAllProductController extends HttpServlet {
             else
                 request.setAttribute("products", products);
 
-            RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/resume/allResumes.jsp");
+            RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/jsp/resume/allResumes.jsp");
             dispatcher.forward(request, response);
         } catch (Exception e) {
             response.sendRedirect("error");

@@ -1,11 +1,16 @@
 package com.example.demo;
 
 
+import com.example.demo.utils.RandomString;
 import org.junit.jupiter.api.*;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.nio.charset.Charset;
+import java.security.SecureRandom;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -77,5 +82,12 @@ public class JUnitTest {
     @AfterAll
     public static void finish() {
         System.out.println("End testing...");
+    }
+
+    @Test
+    public void testdate() {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        System.out.println(dtf.format(now));
     }
 }

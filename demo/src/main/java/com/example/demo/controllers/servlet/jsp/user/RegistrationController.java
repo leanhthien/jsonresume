@@ -1,22 +1,21 @@
-package com.example.demo.controllers.servlet.user;
+package com.example.demo.controllers.servlet.jsp.user;
 
 import com.example.demo.entity.AppUser;
-import com.example.demo.services.ProductService;
-import com.example.demo.services.ProductServiceJdbcImpl;
 import com.example.demo.services.UserService;
 import com.example.demo.services.UserServiceJdbcImpl;
 import com.example.demo.utils.EncrytedPasswordUtils;
+import org.springframework.context.annotation.Profile;
 
 import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
 
-import static com.example.demo.utils.Const.ERROR_RESPONSE;
-import static com.example.demo.utils.Const.LOGIN_SESSION;
+import static com.example.demo.utils.ConstUtils.ERROR_RESPONSE;
+import static com.example.demo.utils.ConstUtils.LOGIN_SESSION;
 
+@Profile("api")
 @WebServlet(name="registration", urlPatterns = "/servlet/registration")
 public class RegistrationController extends HttpServlet {
 
@@ -33,7 +32,7 @@ public class RegistrationController extends HttpServlet {
 
         if (session == null || session.getAttribute(LOGIN_SESSION) == null) {
             try {
-                RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/user/registration.jsp");
+                RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/jsp/user/registration.html");
                 dispatcher.forward(request, response);
             } catch (Exception e) {
                 this.log("Error in [" + this.getClass().getSimpleName() + "] at method ["+ Thread.currentThread().getStackTrace()[1].getMethodName() + "]", e);
@@ -87,13 +86,13 @@ public class RegistrationController extends HttpServlet {
                 }
                 else {
                     request.setAttribute(ERROR_RESPONSE,"User already exist!");
-                    RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/user/registration.jsp");
+                    RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/user/registration.html");
                     dispatcher.forward(request, response);
                 }
             }
             else {
                 request.setAttribute(ERROR_RESPONSE,"Password and retype password must be the same!");
-                RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/user/registration.jsp");
+                RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/user/registration.html");
                 dispatcher.forward(request, response);
             }
 

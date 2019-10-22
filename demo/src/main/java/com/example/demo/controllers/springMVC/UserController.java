@@ -11,30 +11,31 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.security.Principal;
 
+@Profile("mvc")
 @Controller
 public class UserController {
-//    private UserService userService;
-//
-//    @Autowired
-//    public void setUserService(UserService userService) {
-//        this.userService = userService;
-//    }
-//
-//    @RequestMapping("/registration")
-//    public String listUser(Model model, Principal principal) {
-//        if (principal != null && principal.getName() != null) {
-//            return "redirect:/";
-//        }
-//        else {
-//            model.addAttribute("user", new AppUser());
-//            return "registration";
-//        }
-//    }
-//
-//    @RequestMapping(value = "/registration", method = RequestMethod.POST)
-//    public String saveOrUpdateUser(AppUser user) {
-//        AppUser savedUser = userService.saveOrUpdateUser(user);
-//        return "redirect:/userInfo";
-//    }
+    private UserService userService;
+
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
+    @RequestMapping("/registration")
+    public String listUser(Model model, Principal principal) {
+        if (principal != null && principal.getName() != null) {
+            return "redirect:/";
+        }
+        else {
+            model.addAttribute("user", new AppUser());
+            return "registration";
+        }
+    }
+
+    @RequestMapping(value = "/registration", method = RequestMethod.POST)
+    public String saveOrUpdateUser(AppUser user) {
+        AppUser savedUser = userService.saveOrUpdateUser(user);
+        return "redirect:/userInfo";
+    }
 
 }

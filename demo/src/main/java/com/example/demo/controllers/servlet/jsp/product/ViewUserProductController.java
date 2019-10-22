@@ -1,8 +1,9 @@
-package com.example.demo.controllers.servlet.product;
+package com.example.demo.controllers.servlet.jsp.product;
 
 import com.example.demo.entity.Product;
 import com.example.demo.services.ProductService;
 import com.example.demo.services.ProductServiceJdbcImpl;
+import org.springframework.context.annotation.Profile;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -13,9 +14,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-import static com.example.demo.utils.Const.ERROR_RESPONSE;
-import static com.example.demo.utils.Const.LOGIN_SESSION;
+import static com.example.demo.utils.ConstUtils.ERROR_RESPONSE;
+import static com.example.demo.utils.ConstUtils.LOGIN_SESSION;
 
+@Profile("api")
 @WebServlet(name="listUserProduct", urlPatterns = "/servlet/product/user")
 public class ViewUserProductController extends HttpServlet {
 
@@ -43,7 +45,7 @@ public class ViewUserProductController extends HttpServlet {
                     request.setAttribute("products", products);
                 }
 
-                RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/resume/resumes.jsp");
+                RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/jsp/resume/resumes.jsp");
                 dispatcher.forward(request, response);
 
             } catch (Exception e) {

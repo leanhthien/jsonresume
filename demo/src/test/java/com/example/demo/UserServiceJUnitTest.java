@@ -1,6 +1,7 @@
 package com.example.demo;
 
 import com.example.demo.entity.AppUser;
+import com.example.demo.entity.Token;
 import com.example.demo.services.*;
 import com.example.demo.utils.EncrytedPasswordUtils;
 import org.junit.jupiter.api.*;
@@ -27,6 +28,7 @@ public class UserServiceJUnitTest {
         System.out.println("Init fields ...");
 
         userService = new UserServiceJdbcImpl();
+
     }
 
     @DisplayName("Test get user from username by getUserByName")
@@ -59,6 +61,36 @@ public class UserServiceJUnitTest {
         String result = userService.deleteUser(5L);
 
         assertEquals("Success", result);
+    }
+
+    @Test
+    public void createToken_fromSetToken() {
+
+        AppUser appUser = userService.getUserByName("test");
+
+        Token token = userService.setToken(appUser);
+
+        System.out.println("Token is: " + token.getToken());
+    }
+
+    @Test
+    public void validateToken_fromValidateToken() {
+
+        String token = "AuJHSxcx69z4arc3kHVFzFRNXv2srf7y";
+
+        String status = userService.validateToken(token, 1L);
+
+        System.out.println("Status: " + status);
+    }
+
+    @Test
+    public void deleteToken_fromDeleteToken() {
+
+        String token = "gucYCCha7wniNjrAQkB31dxe6fk18BjU";
+
+        String status = userService.deleteToken(token);
+
+        System.out.println("Status: " + status);
     }
 
 

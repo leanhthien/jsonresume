@@ -4,39 +4,32 @@ import com.example.demo.entity.Product;
 
 import java.util.List;
 
-public class Response {
-    Product product;
-    List<Product> products;
-    String message;
+public class Response<T> {
 
-    public Response(String massage) {
-        this.message = massage;
+    private String status;
+    private T data;
+
+    public Response(String status) {
+        this.status = status;
     }
 
-    public Response(String massage, Product product) {
-        this.message = massage;
-        this.product = product;
+    public Response(String status, T data) {
+        this.status = status;
+        this.data = data;
     }
 
-    public Response(String massage, List<Product> products) {
-        this.message = massage;
-        this.products = products;
+    public String getMessage() {
+        return status;
     }
 
-    public Product getProduct() {
-        return product;
+    public void setMessage(String status) {
+        this.status = status;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
-    }
+    public T getData() { return data;}
 
-    public Product getProducts() {
-        return product;
-    }
-
-    public void setProducts(List<Product> products) {
-        this.products = products;
+    public void setData(T data) {
+        this.data = data;
     }
 
 

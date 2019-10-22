@@ -1,10 +1,13 @@
-package com.example.demo.controllers.servlet.user;
+package com.example.demo.controllers.servlet.jsp.user;
+
+import org.springframework.context.annotation.Profile;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
 
+@Profile("api")
 @WebServlet(name="logout", urlPatterns = "/servlet/logout")
 public class LogoutController extends HttpServlet {
 

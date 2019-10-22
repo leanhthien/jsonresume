@@ -188,6 +188,17 @@ public class ProductServiceJUnitTest {
         assertEquals("Fail", productService.deleteProduct(INVALID_ID));
     }
 
+    @DisplayName("Check enable top product")
+    @Test
+    public void checkEnableProduct_byEnableProduct() {
+
+        productService.setEnabledProduct(3L,"test");
+
+        Long id = productService.getTopProduct("test").getProductId();
+
+        assertEquals(3L, (long) id);
+    }
+
     @Disabled
     @Test
     public void wrongSQLSyntax_inListAllProducts() {

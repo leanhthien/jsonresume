@@ -1,9 +1,10 @@
-package com.example.demo.controllers.servlet.user;
+package com.example.demo.controllers.servlet.jsp.user;
 
 import com.example.demo.entity.AppUser;
 import com.example.demo.services.UserService;
 import com.example.demo.services.UserServiceJdbcImpl;
 import com.example.demo.utils.EncrytedPasswordUtils;
+import org.springframework.context.annotation.Profile;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,9 +13,10 @@ import javax.servlet.http.*;
 import java.io.IOException;
 import java.util.Optional;
 
-import static com.example.demo.utils.Const.ERROR_RESPONSE;
-import static com.example.demo.utils.Const.LOGIN_SESSION;
+import static com.example.demo.utils.ConstUtils.ERROR_RESPONSE;
+import static com.example.demo.utils.ConstUtils.LOGIN_SESSION;
 
+@Profile("api")
 @WebServlet(name="login", urlPatterns = "/servlet/login")
 public class LoginController extends HttpServlet {
 
@@ -34,7 +36,7 @@ public class LoginController extends HttpServlet {
         this.log("Previous url is: " + prevLink.toString());
 
         try {
-            RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/user/login.jsp");
+            RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/user/login.html");
             dispatcher.forward(request, response);
         } catch (Exception e) {
             this.log("Error in [" + this.getClass().getSimpleName() + "] at method ["+ Thread.currentThread().getStackTrace()[1].getMethodName() + "]", e);
@@ -85,7 +87,7 @@ public class LoginController extends HttpServlet {
             }
             else {
                 request.setAttribute(ERROR_RESPONSE,"Username or password is not correct!");
-                RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/user/login.jsp");
+                RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/jsp/user/login.html");
                 dispatcher.forward(request, response);
             }
         } catch (Exception e) {

@@ -1,8 +1,8 @@
-package com.example.demo.controllers.servlet.product;
+package com.example.demo.controllers.servlet.jsp.product;
 
-import com.example.demo.entity.AppUser;
 import com.example.demo.entity.Product;
 import com.example.demo.services.*;
+import org.springframework.context.annotation.Profile;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,8 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static com.example.demo.utils.Const.LOGIN_SESSION;
+import static com.example.demo.utils.ConstUtils.LOGIN_SESSION;
 
+@Profile("api")
 @WebServlet(name="editProduct", urlPatterns = "/servlet/product/edit")
 public class EditProductController extends HttpServlet {
 
@@ -35,7 +36,7 @@ public class EditProductController extends HttpServlet {
                 if (username.equals(product.getAppUser().getUserName())) {
                     request.setAttribute("product", product);
 
-                    RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/resume/editResumeForm.jsp");
+                    RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/jsp/resume/editResumeForm.jsp");
                     dispatcher.forward(request, response);
                 }
                 else {

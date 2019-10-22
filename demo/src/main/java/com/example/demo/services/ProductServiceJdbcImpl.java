@@ -9,11 +9,11 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.demo.utils.Const.FAIL;
-import static com.example.demo.utils.Const.SUCCESS;
+import static com.example.demo.utils.ConstUtils.FAIL;
+import static com.example.demo.utils.ConstUtils.SUCCESS;
 
 @Service
-@Profile("jdbc")
+@Profile("api")
 public class ProductServiceJdbcImpl implements ProductService {
 
   private static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";

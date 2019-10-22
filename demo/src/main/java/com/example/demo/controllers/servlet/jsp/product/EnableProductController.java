@@ -1,7 +1,9 @@
-package com.example.demo.controllers.servlet.product;
+package com.example.demo.controllers.servlet.jsp.product;
 
+import com.example.demo.entity.Product;
 import com.example.demo.services.ProductService;
 import com.example.demo.services.ProductServiceJdbcImpl;
+import org.springframework.context.annotation.Profile;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,10 +12,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static com.example.demo.utils.Const.ERROR_RESPONSE;
+import static com.example.demo.utils.ConstUtils.ERROR_RESPONSE;
+import static com.example.demo.utils.ConstUtils.LOGIN_SESSION;
 
-@WebServlet(name="deleteProduct", urlPatterns = "/servlet/product/delete")
-public class DeleteProductController extends HttpServlet {
+@Profile("api")
+@WebServlet(name="enableProduct", urlPatterns = "/servlet/product/enable")
+public class EnableProductController extends HttpServlet {
 
     private ProductService productService;
 
@@ -26,10 +30,11 @@ public class DeleteProductController extends HttpServlet {
 
         try {
             long productId = Long.parseLong(request.getParameter("id"));
-            String status = productService.deleteProduct(productId);
+            String username = (String) request.getSession(false).getAttribute(LOGIN_SESSION);
+            Product product = productService.setEnabledProduct(productId, username);
 
-            if (status.equals("Fail"))
-                request.setAttribute(ERROR_RESPONSE,"Can not delete resume!");
+            if (product == null)
+                request.setAttribute(ERROR_RESPONSE,"Can not enable top resume");
 
             response.sendRedirect("user");
 
@@ -41,6 +46,7 @@ public class DeleteProductController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doGet(request, response);
+
+        doGet(request,response);
     }
 }

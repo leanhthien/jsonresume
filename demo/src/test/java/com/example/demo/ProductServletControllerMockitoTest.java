@@ -1,12 +1,11 @@
 package com.example.demo;
 
-import com.example.demo.controllers.servlet.product.ViewUserProductController;
+import com.example.demo.controllers.servlet.api.product.ViewUserProductAPI;
 import com.example.demo.entity.Product;
 import com.example.demo.services.ProductService;
 import com.example.demo.services.ProductServiceJdbcImpl;
 import org.junit.jupiter.api.*;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import javax.servlet.ServletException;
@@ -20,7 +19,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-public class ProductServletControllerMockitoTest extends ViewUserProductController {
+public class ProductServletControllerMockitoTest extends ViewUserProductAPI {
 
     private ProductService productService = new ProductServiceJdbcImpl();
     private final long TOTAL_USER_HAS_PRODUCT = 1L;

@@ -1,5 +1,7 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,12 +20,15 @@ public class AppUser {
     @Column(name = "User_Name", length = 36, nullable = false)
     private String userName;
 
+    @JsonIgnore
     @Column(name = "Encrypted_Password", length = 128, nullable = false)
     private String encryptedPassword;
 
+    @JsonIgnore
     @Column(name = "Enabled", length = 1, nullable = false)
     private boolean enabled;
 
+    @JsonIgnore
     @OneToMany(mappedBy="appUser", cascade = CascadeType.ALL)
     private List<Product> products = new ArrayList<>();
 

@@ -1,14 +1,18 @@
 package com.example.demo.utils;
 
+import org.springframework.context.annotation.Profile;
+
 import javax.servlet.*;
+import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-import static com.example.demo.utils.Const.LOGIN_SESSION;
+import static com.example.demo.utils.ConstUtils.LOGIN_SESSION;
 
-public class AuthenticationFilter implements Filter {
+@WebFilter("/servlet/product/*")
+public class AuthenticationServletFilter implements Filter {
 
     private ServletContext context;
 
