@@ -39,11 +39,10 @@ public class NewProductAPI extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        String username = (String) request.getSession(false).getAttribute(LOGIN_SESSION);
-
         String result;
         try {
 
+            String username = request.getParameter("username");
             String name = request.getParameter("name");
             String job_title = request.getParameter("jobTitle");
             String address = request.getParameter("address");
@@ -61,8 +60,8 @@ public class NewProductAPI extends HttpServlet {
             if (newProduct != null)
                 result = this.gson.toJson(new Response<>(SUCCESS, newProduct));
             else {
-                result = this.gson.toJson(new Response<>(FAIL, null));
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Cannot create product!");
+                result = this.gson.toJson(new Response<>(FAIL, "Cannot create product!"));
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             }
 
         } catch (Exception e) {
