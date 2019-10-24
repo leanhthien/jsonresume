@@ -143,6 +143,7 @@
 
 	<build>
 		<plugins>
+
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
@@ -170,7 +171,9 @@
 				<executions>
 					<execution>
 						<phase>package</phase>
-						<goals><goal>copy</goal></goals>
+						<goals>
+							<goal>copy</goal>
+						</goals>
 						<configuration>
 							<artifactItems>
 								<artifactItem>
