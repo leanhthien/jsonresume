@@ -1,6 +1,7 @@
 package com.example.demo.controllers.servlet.jsp.product;
 
 import com.example.demo.entity.Product;
+import com.example.demo.model.Response;
 import com.example.demo.services.*;
 import org.springframework.context.annotation.Profile;
 
@@ -71,9 +72,9 @@ public class EditProductController extends HttpServlet {
             Product editProduct = new Product(productId, name, job_title, address, telephone, email, website, language, about, workExperience, enabled);
             editProduct.setProductId(productId);
 
-            editProduct = productService.saveOrUpdateProduct(editProduct, username);
+            Response<Product> data = productService.saveOrUpdateProduct(editProduct, username);
 
-            response.sendRedirect("detail?id="+ editProduct.getProductId());
+            response.sendRedirect("detail?id="+ data.getData().getProductId());
         } catch (Exception e) {
             response.sendRedirect("error");
         }

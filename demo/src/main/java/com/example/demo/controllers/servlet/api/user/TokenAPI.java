@@ -1,5 +1,6 @@
 package com.example.demo.controllers.servlet.api.user;
 
+
 import com.example.demo.model.Response;
 import com.example.demo.services.UserService;
 import com.example.demo.services.UserServiceJdbcImpl;
@@ -9,15 +10,16 @@ import org.springframework.context.annotation.Profile;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.*;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import static com.example.demo.utils.ConstUtils.*;
 
 @Profile("api")
-@WebServlet(name="logout", urlPatterns = "/api/logout")
-public class LogoutAPI extends HttpServlet {
+@WebServlet(name="token", urlPatterns = "/api/token")
+public class TokenAPI extends HttpServlet {
 
     private Gson gson;
 
@@ -30,23 +32,16 @@ public class LogoutAPI extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doPost(request, response);
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         String result;
         try {
 
-            String token = request.getHeader("token");
-            String status = userService.deleteToken(token);
-            if (status.equals(SUCCESS))
-                result = this.gson.toJson(new Response<>(SUCCESS, "Logout success!"));
-            else {
-                result = this.gson.toJson(new Response<>(FAIL, "Cannot logout!"));
+            String token = request.getHeader("Authorization");
+
+            Response<String> validateResponse =  userService.validateToken(token);
+            result = this.gson.toJson(new Response<>(validateResponse.getMessage(), validateResponse.getData()));
+            if(validateResponse.getMessage().equals(FAIL))
                 response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            }
 
         } catch (Exception e) {
             this.log("Error in [" + this.getClass().getSimpleName() + "] at method ["
@@ -56,5 +51,10 @@ public class LogoutAPI extends HttpServlet {
         }
 
         APIUtils.printResult(response, result);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        doGet(request, response);
     }
 }

@@ -1,6 +1,7 @@
 package com.example.demo.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.gson.Gson;
 
 import javax.persistence.*;
 
@@ -192,5 +193,10 @@ public class Product {
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
+
+    public String toString(Product product) {
+        return new Gson().toJson(product);
+    }
+
 
 }

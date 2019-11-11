@@ -11,7 +11,7 @@ import java.io.IOException;
 
 import static com.example.demo.utils.ConstUtils.LOGIN_SESSION;
 
-@WebFilter("/servlet/product/*")
+//@WebFilter("/servlet/product/*")
 public class AuthenticationServletFilter implements Filter {
 
     private ServletContext context;
@@ -38,6 +38,8 @@ public class AuthenticationServletFilter implements Filter {
             this.context.log("Continue direct");
             filterChain.doFilter(servletRequest, servletResponse);
         }
+
+
     }
 
     @Override

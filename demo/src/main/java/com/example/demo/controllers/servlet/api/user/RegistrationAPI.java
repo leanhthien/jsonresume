@@ -10,12 +10,10 @@ import com.example.demo.utils.EncrytedPasswordUtils;
 import com.google.gson.Gson;
 import org.springframework.context.annotation.Profile;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import static com.example.demo.utils.ConstUtils.*;
 import static com.example.demo.utils.ConstUtils.FAIL;
@@ -42,13 +40,15 @@ public class RegistrationAPI extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         String result;
+        String errorMessage = "";
+        Token token = null;
         try {
 
             String userName = request.getParameter("username");
             String password = request.getParameter("password");
             String retypePassword = request.getParameter("retypePassword");
 
-            if (password.equals(retypePassword)) {
+            if (password != null && password.equals(retypePassword)) {
 
                 String encryptedPassword = EncrytedPasswordUtils.encryptPassword(password);
 
@@ -57,29 +57,41 @@ public class RegistrationAPI extends HttpServlet {
                 AppUser checkUser = userService.getUserByName(userName);
 
                 if (checkUser == null) {
-                    userService.saveOrUpdateUser(appUser);
-                    Token token = userService.setToken(appUser);
+                    AppUser user = userService.saveOrUpdateUser(appUser);
 
-                    if (token != null)
-                        result = this.gson.toJson(new Response<>(SUCCESS, token));
-                    else {
-                        result = this.gson.toJson(new Response<>(FAIL, "Cannot create token!"));
-                        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                    if (user != null) {
+                        token = userService.setToken(appUser);
+
+                        if (token == null)
+                            errorMessage = "Cannot create token!";
                     }
+                    else
+                        errorMessage = "Cannot create new user!";
+
                 }
                 else {
-                    result = this.gson.toJson(new Response<>(FAIL, "User already exist!"));
-                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                    errorMessage = "User already exists!";
                 }
             }
             else {
-                result = this.gson.toJson(new Response<>(FAIL, "Password and retype password must be the same!"));
+                errorMessage = "Password and retype password must be the same!";
+            }
+
+            this.log("Error message: "+ errorMessage);
+            if (!errorMessage.isEmpty()) {
+                this.log("Trigger data fail!");
+                result = this.gson.toJson(new Response<>(FAIL, errorMessage));
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            }
+            else {
+                result = this.gson.toJson(new Response<>(SUCCESS, token));
             }
 
         } catch (Exception e) {
             this.log("Error in [" + this.getClass().getSimpleName() + "] at method ["
                     + Thread.currentThread().getStackTrace()[1].getMethodName() + "]", e);
+
+            this.log("Trigger catch fail!");
             result = this.gson.toJson(new Response<>(FAIL, COMMON_ERROR));
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }

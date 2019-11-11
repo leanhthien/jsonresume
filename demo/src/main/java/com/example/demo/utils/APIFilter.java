@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import static com.example.demo.utils.ConstUtils.FAIL;
+import static com.example.demo.utils.ConstUtils.SUCCESS;
 
 @Profile("api")
 @WebFilter("/*")
@@ -39,25 +40,37 @@ public class APIFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
         addCorsHeader(response);
-        this.context.log("Trigger filter of api");
 
         if (request.getRequestURI().contains("api/product")) {
-            if (APIUtils.isValidUser(request, userService, context)) {
-                this.context.log("Trigger valid token");
-                filterChain.doFilter(request, response);
+
+            String token = request.getHeader("Authorization");
+            Response<String> validateResponse = APIUtils.isValidUser(token, userService, context);
+
+            this.context.log("URI: " + request.getRequestURI());
+            this.context.log("Authorization: " + token);
+
+            if (validateResponse.getMessage().equals(SUCCESS)) {
+                this.context.log("Validate success");
             }
             else {
-                this.context.log("Trigger invalid token");
-                String result = this.gson.toJson(new Response<>(FAIL, "Invalid token"));
-                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                APIUtils.printResult(response, result);
+                this.context.log("Validate fail!");
             }
+                filterChain.doFilter(request, response);
+
+//            if (validateResponse.getMessage().equals(SUCCESS)) {
+//                filterChain.doFilter(request, response);
+//            }
+//            else {
+//                String result = this.gson.toJson(new Response<>(FAIL, validateResponse.getData()));
+//                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+//                APIUtils.printResult(response, result);
+//            }
         }
         else {
             filterChain.doFilter(request, response);
         }
 
-
+//        filterChain.doFilter(request, response);
 
     }
 
@@ -67,7 +80,7 @@ public class APIFilter implements Filter {
     private void addCorsHeader(HttpServletResponse response){
         response.addHeader("Access-Control-Allow-Origin", "*");
         response.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, HEAD");
-        response.addHeader("Access-Control-Allow-Headers", "X-PINGOTHER, Origin, X-Requested-With, Content-Type, Accept");
+        response.addHeader("Access-Control-Allow-Headers", "X-PINGOTHER, Origin, X-Requested-With, Content-Type, Accept, Authorization");
         response.addHeader("Access-Control-Max-Age", "1728000");
     }
 }

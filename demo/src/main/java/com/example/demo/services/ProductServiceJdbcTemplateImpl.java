@@ -2,6 +2,7 @@ package com.example.demo.services;
 
 import com.example.demo.entity.AppUser;
 import com.example.demo.entity.Product;
+import com.example.demo.model.Response;
 import com.example.demo.rowMapper.AppUserRowMapper;
 import com.example.demo.rowMapper.ProductRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Service;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.List;
+
+import static com.example.demo.utils.ConstUtils.SUCCESS;
 
 @Repository
 @Service
@@ -52,7 +55,7 @@ public class ProductServiceJdbcTemplateImpl implements ProductService {
   }
 
   @Override
-  public Product saveOrUpdateProduct(Product product, String username) {
+  public Response<Product> saveOrUpdateProduct(Product product, String username) {
 
     String sql =  "SELECT * " +
                   "FROM APP_USER " +
@@ -114,7 +117,7 @@ public class ProductServiceJdbcTemplateImpl implements ProductService {
       }
     }
 
-    return product;
+    return new Response<>(SUCCESS, product);
   }
 
   @Override
@@ -143,7 +146,7 @@ public class ProductServiceJdbcTemplateImpl implements ProductService {
   }
 
   @Override
-  public String deleteProduct(Long id) {
+  public String deleteProduct(Long id, String username) {
 
     String sql = "DELETE FROM PRODUCT WHERE PRODUCT_ID = ?";
     jdbcTemplate.update(sql, id);

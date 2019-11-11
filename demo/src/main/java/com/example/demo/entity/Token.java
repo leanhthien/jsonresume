@@ -15,6 +15,11 @@ public class Token {
         this.appUser = appUser;
     }
 
+    public Token(Long tokenId, LocalDateTime createAt) {
+        this.tokenId = tokenId;
+        this.createAt = createAt;
+    }
+
     public Long getTokenId() {
         return tokenId;
     }

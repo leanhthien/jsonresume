@@ -48,7 +48,7 @@ public class ViewDetailProductAPI extends HttpServlet {
                 result = this.gson.toJson(new Response<>(SUCCESS, product));
             else {
                 result = this.gson.toJson(new Response<>(FAIL, "Cannot found product!"));
-                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             }
 
         } catch (Exception e) {

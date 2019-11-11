@@ -2,6 +2,7 @@ package com.example.demo.services;
 
 import com.example.demo.entity.AppUser;
 import com.example.demo.entity.Product;
+import com.example.demo.model.Response;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
@@ -202,7 +203,7 @@ public class ProductServiceJdbcImpl implements ProductService {
     Connection conn = null;
     PreparedStatement preparedStatement;
     Product product  = null;
-    AppUser appUser = null;
+    AppUser appUser;
     try {
 
       Class.forName(JDBC_DRIVER);
@@ -271,9 +272,10 @@ public class ProductServiceJdbcImpl implements ProductService {
   }
 
   @Override
-  public Product saveOrUpdateProduct(Product product, String username){
+  public Response<Product> saveOrUpdateProduct(Product product, String username){
     Connection conn = null;
     PreparedStatement preparedStatement;
+    String message = "";
 
     try {
 
@@ -361,6 +363,10 @@ public class ProductServiceJdbcImpl implements ProductService {
 
         effectedRow = preparedStatement.executeUpdate();
 
+        if (effectedRow != 1) {
+          message = " Cannot excute create new product!";
+        }
+
         try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
           if (generatedKeys.next()) {
             product.setProductId(generatedKeys.getLong(1));
@@ -376,11 +382,19 @@ public class ProductServiceJdbcImpl implements ProductService {
         preparedStatement.setLong(11, product.getAppUser().getUserId());
         preparedStatement.setLong(12, product.getProductId());
         effectedRow = preparedStatement.executeUpdate();
+
+        if (effectedRow != 1) {
+          message = " Cannot excute create new product with id!";
+        }
       }
       // Update product
       else {
         preparedStatement.setLong(10, product.getProductId());
         effectedRow = preparedStatement.executeUpdate();
+
+        if (effectedRow != 1) {
+          message = " Cannot excute update product!";
+        }
       }
 
       rs.close();
@@ -389,6 +403,7 @@ public class ProductServiceJdbcImpl implements ProductService {
     } catch(Exception se){
       se.printStackTrace();
       product = null;
+      message = " Ecxeption error!";
     } finally {
       try {
         if (conn != null)
@@ -396,10 +411,11 @@ public class ProductServiceJdbcImpl implements ProductService {
       } catch (SQLException se) {
         se.printStackTrace();
         product = null;
+        message = " SQL error!";
       }
     }
 
-    return product;
+    return new Response<>(message, product);
   }
 
   @Override
@@ -483,7 +499,7 @@ public class ProductServiceJdbcImpl implements ProductService {
   }
 
   @Override
-  public String deleteProduct(Long id){
+  public String deleteProduct(Long id, String username){
     Connection conn = null;
     PreparedStatement preparedStatement;
     String status = FAIL;
@@ -493,11 +509,26 @@ public class ProductServiceJdbcImpl implements ProductService {
 
       conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
-      String sql = "DELETE FROM PRODUCT WHERE PRODUCT_ID = ?";
+      String sql ="SELECT USER_ID " +
+              "FROM APP_USER " +
+              "WHERE USER_NAME = ?";
+      preparedStatement = conn.prepareStatement(sql);
+
+      preparedStatement.setString(1, username);
+
+      ResultSet rs = preparedStatement.executeQuery();
+
+      long user_id = -1;
+      while(rs.next()){
+        user_id = rs.getLong("user_id");
+      }
+
+      sql = "DELETE FROM PRODUCT WHERE PRODUCT_ID = ? AND USER_ID = ?";
 
       preparedStatement = conn.prepareStatement(sql);
 
       preparedStatement.setLong(1, id);
+      preparedStatement.setLong(2, user_id);
 
       int effectedRow = preparedStatement.executeUpdate();
 

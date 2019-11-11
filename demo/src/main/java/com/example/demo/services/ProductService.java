@@ -4,6 +4,7 @@ package com.example.demo.services;
 import java.util.List;
 
 import com.example.demo.entity.Product;
+import com.example.demo.model.Response;
 
 public interface ProductService {
   List<Product> listAllProducts();
@@ -14,9 +15,9 @@ public interface ProductService {
 
   Product getTopProduct(String username);
 
-  Product saveOrUpdateProduct(Product product, String username);
+  Response<Product> saveOrUpdateProduct(Product product, String username);
 
   Product setEnabledProduct(Long productId, String username);
 
-  String deleteProduct(Long id);
+  String deleteProduct(Long id, String username);
 }

@@ -2,6 +2,7 @@ package com.example.demo.services;
 
 import com.example.demo.entity.AppUser;
 import com.example.demo.entity.Token;
+import com.example.demo.model.Response;
 
 public interface UserService {
 
@@ -9,7 +10,7 @@ public interface UserService {
 
     AppUser saveOrUpdateUser(AppUser user);
 
-    String validateToken(String token, Long userId);
+    Response<String> validateToken(String token);
 
     Token setToken(AppUser user);
 

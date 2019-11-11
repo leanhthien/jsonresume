@@ -28,7 +28,9 @@ public class DeleteProductController extends HttpServlet {
 
         try {
             long productId = Long.parseLong(request.getParameter("id"));
-            String status = productService.deleteProduct(productId);
+            String username = request.getParameter("username");
+
+            String status = productService.deleteProduct(productId, username);
 
             if (status.equals("Fail"))
                 request.setAttribute(ERROR_RESPONSE,"Can not delete resume!");

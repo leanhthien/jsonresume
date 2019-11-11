@@ -13,8 +13,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
 
 import static com.example.demo.utils.ConstUtils.*;
 
@@ -24,7 +26,6 @@ public class EditProductAPI extends HttpServlet {
 
     private Gson gson;
     private ProductService productService;
-    private String result;
 
     public void init() {
         gson = new Gson();
@@ -39,36 +40,41 @@ public class EditProductAPI extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+        String result;
+
         try {
+
+            StringBuilder sb = new StringBuilder();
+            Product editProduct;
+
+            try (BufferedReader reader = request.getReader()) {
+
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    sb.append(line).append('\n');
+                }
+
+                editProduct = this.gson.fromJson(sb.toString(), Product.class);
+                this.log("Product: " + this.gson.toJson(editProduct));
+            }
+
             String username = request.getParameter("username");
-            long   productId = Long.parseLong(request.getParameter("productId"));
-            String name = request.getParameter("name");
-            String job_title = request.getParameter("jobTitle");
-            String address = request.getParameter("address");
-            String telephone = request.getParameter("telephone");
-            String email = request.getParameter("email");
-            String website = request.getParameter("website");
-            String language = request.getParameter("language");
-            String about = request.getParameter("about");
-            String workExperience = request.getParameter("workExperience");
-            boolean enabled = Boolean.parseBoolean(request.getParameter("enabled"));
-            Product editProduct = new Product(productId, name, job_title, address, telephone, email, website, language, about, workExperience, enabled);
-            editProduct.setProductId(productId);
 
-            editProduct = productService.saveOrUpdateProduct(editProduct, username);
+            Response<Product> data = productService.saveOrUpdateProduct(editProduct, username);
+            this.log("Data: " + data.getMessage());
 
-            if (editProduct != null)
-                result = this.gson.toJson(new Response<>(SUCCESS, editProduct));
+            if (data.getData() != null)
+                result = this.gson.toJson(new Response<>(SUCCESS, data.getData()));
             else {
-                result = this.gson.toJson(new Response<>(FAIL, "Cannot edit product"));
-                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                result = this.gson.toJson(new Response<>(FAIL, data.getMessage()));
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             }
 
         } catch (Exception e) {
             this.log("Error in [" + this.getClass().getSimpleName() + "] at method ["
                     + Thread.currentThread().getStackTrace()[1].getMethodName() + "]", e);
-            result = this.gson.toJson(new Response<>(FAIL, null));
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            result = this.gson.toJson(new Response<>(FAIL, COMMON_ERROR));
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
 
         APIUtils.printResult(response, result);

@@ -1,6 +1,7 @@
 package com.example.demo;
 
 import com.example.demo.entity.Product;
+import com.example.demo.model.Response;
 import com.example.demo.services.ProductService;
 import com.example.demo.services.ProductServiceJdbcImpl;
 import org.junit.jupiter.api.*;
@@ -128,19 +129,19 @@ public class ProductServiceJUnitTest {
         product.setAbout("My name is Albert, and I’m a Computer Engineer. My job is to provide job seekers with expert advice on career-related topics. I read a lot and consult recruiting professionals so you don’t have to. I show you how to hack the recruitment process, create a job-winning resume, ace the job interview, and... introduce yourself, among others.");
         product.setWorkExperience("Three years at IBM");
 
-        Product newProduct = productService.saveOrUpdateProduct(product, userName);
+        Response<Product> data = productService.saveOrUpdateProduct(product, userName);
 
         boolean isExist = false;
         for (Product item : products) {
-            if (item.getProductId().equals(newProduct.getProductId())) {
+            if (item.getProductId().equals(data.getData().getProductId())) {
                 isExist = true;
                 break;
             }
         }
 
-        productService.deleteProduct(newProduct.getProductId());
+        productService.deleteProduct(data.getData().getProductId(), userName);
 
-        assertTrue(newProduct.getTelephone().equals(randomTelephone) && !isExist);
+        assertTrue(data.getData().getTelephone().equals(randomTelephone) && !isExist);
     }
 
     @DisplayName("Check update product with telephone by saveOrUpdateProduct")
@@ -173,11 +174,11 @@ public class ProductServiceJUnitTest {
 
         Product product = productService.getProductById(productId);
 
-        productService.deleteProduct(productId);
+        productService.deleteProduct(productId, userName);
 
         Product deletedProduct = productService.getProductById(productId);
 
-        productId = productService.saveOrUpdateProduct(product, product.getAppUser().getUserName()).getProductId();
+        productId = productService.saveOrUpdateProduct(product, product.getAppUser().getUserName()).getData().getProductId();
 
         assertNull(deletedProduct);
     }
@@ -185,7 +186,7 @@ public class ProductServiceJUnitTest {
     @DisplayName("Check delete product with invalid id by deleteProduct")
     @Test
     public void checkDeleteProductWithInvalidId_byDeleteProduct() {
-        assertEquals("Fail", productService.deleteProduct(INVALID_ID));
+        assertEquals("Fail", productService.deleteProduct(INVALID_ID, userName));
     }
 
     @DisplayName("Check enable top product")

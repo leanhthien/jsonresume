@@ -4,6 +4,7 @@ import com.example.demo.entity.AppRole;
 import com.example.demo.entity.AppUser;
 import com.example.demo.entity.Token;
 import com.example.demo.entity.UserRole;
+import com.example.demo.model.Response;
 import com.example.demo.repository.RoleRepository;
 import com.example.demo.repository.UserRoleRepository;
 import com.example.demo.repository.UserRepository;
@@ -53,7 +54,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String validateToken(String token, Long userId) {
+    public Response<String> validateToken(String token) {
         return null;
     }
 

@@ -57,7 +57,7 @@ public class LoginAPI extends HttpServlet {
                     result = this.gson.toJson(new Response<>(SUCCESS, token));
                 else {
                     result = this.gson.toJson(new Response<>(FAIL, "Cannot create token!"));
-                    response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 }
             }
             else {

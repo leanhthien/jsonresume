@@ -40,11 +40,14 @@ public class DeleteProductAPI extends HttpServlet {
         try {
 
             long productId = Long.parseLong(request.getParameter("id"));
-            String status = productService.deleteProduct(productId);
+            String username = request.getParameter("username");
+
+            String status = productService.deleteProduct(productId, username);
+
             if (status.equals(SUCCESS))
-                result = this.gson.toJson(new Response<>(SUCCESS, "Delete Success"));
+                result = this.gson.toJson(new Response<>(SUCCESS, "Delete success!"));
             else {
-                result = this.gson.toJson(new Response<>(FAIL, "Cannot delete product"));
+                result = this.gson.toJson(new Response<>(FAIL, "Cannot delete product!"));
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             }
 
@@ -52,7 +55,7 @@ public class DeleteProductAPI extends HttpServlet {
             this.log("Error in [" + this.getClass().getSimpleName() + "] at method ["
                     + Thread.currentThread().getStackTrace()[1].getMethodName() + "]", e);
             result = this.gson.toJson(new Response<>(FAIL, COMMON_ERROR));
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
 
         APIUtils.printResult(response, result);

@@ -47,7 +47,7 @@ public class ViewAllProductAPI extends HttpServlet {
 
             if (products == null) {
                 result = this.gson.toJson(new Response<>(FAIL, "Cannot found products!"));
-                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             }
             else
                 result = this.gson.toJson(new Response<>(SUCCESS, products));
@@ -56,7 +56,7 @@ public class ViewAllProductAPI extends HttpServlet {
             this.log("Error in [" + this.getClass().getSimpleName() + "] at method ["
                     + Thread.currentThread().getStackTrace()[1].getMethodName() + "]", e);
             result = this.gson.toJson(new Response<>(FAIL, COMMON_ERROR));
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
 
         APIUtils.printResult(response, result);

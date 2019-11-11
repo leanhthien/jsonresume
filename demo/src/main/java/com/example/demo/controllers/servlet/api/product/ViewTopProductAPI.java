@@ -48,7 +48,7 @@ public class ViewTopProductAPI extends HttpServlet {
                 result = this.gson.toJson(new Response<>(SUCCESS, product));
             else {
                 result = this.gson.toJson(new Response<>(FAIL, "Data not found!"));
-                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             }
 
         } catch (Exception e) {

@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 
 import static com.example.demo.utils.ConstUtils.*;
@@ -27,13 +26,10 @@ public class ViewUserProductAPI extends HttpServlet {
 
     private Gson gson;
 
-    private UserService userService;
-
     private ProductService productService;
 
     public void init() {
         gson = new Gson();
-        userService = new UserServiceJdbcImpl();
         productService = new ProductServiceJdbcImpl();
     }
 
@@ -48,8 +44,8 @@ public class ViewUserProductAPI extends HttpServlet {
                 List<Product> products = productService.listAllProductsByUser(username);
 
                 if (products == null) {
-                    result = this.gson.toJson(new Response<>(FAIL, null));
-                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                    result = this.gson.toJson(new Response<>(FAIL, "Cannot get data!"));
+                    response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 }
                 else
                     result = this.gson.toJson(new Response<>(SUCCESS, products));
@@ -62,8 +58,8 @@ public class ViewUserProductAPI extends HttpServlet {
             }
         }
         else {
-            result = this.gson.toJson(new Response<>(FAIL, null));
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            result = this.gson.toJson(new Response<>(FAIL, "Cannot get data because cannot get username!"));
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
 
         APIUtils.printResult(response, result);

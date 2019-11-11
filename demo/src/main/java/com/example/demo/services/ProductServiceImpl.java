@@ -4,6 +4,7 @@ import com.example.demo.dao.AppUserDAO;
 import com.example.demo.entity.AppUser;
 import com.example.demo.entity.Product;
 
+import com.example.demo.model.Response;
 import com.example.demo.repository.ProductRepository;
 import com.example.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import java.util.*;
+
+import static com.example.demo.utils.ConstUtils.SUCCESS;
 
 @Service
 @Profile("map")
@@ -63,7 +66,7 @@ public class ProductServiceImpl implements ProductService {
   }
 
   @Override
-    public Product saveOrUpdateProduct(Product product, String username) {
+    public Response<Product> saveOrUpdateProduct(Product product, String username) {
       if (product != null){
 //        if (product.getProductId() == null){
 //            product.setProductId(getNextKey());
@@ -79,7 +82,7 @@ public class ProductServiceImpl implements ProductService {
 
         productRepository.save(product);
 
-        return product;
+        return new Response<>(SUCCESS, product);
 
       } else {
         throw new RuntimeException("Product can't be null");
@@ -108,7 +111,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public String deleteProduct(Long id) {
+    public String deleteProduct(Long id, String username) {
       productRepository.deleteById(id);
       return "Success!";
     }

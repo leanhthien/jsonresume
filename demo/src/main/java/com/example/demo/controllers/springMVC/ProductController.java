@@ -1,6 +1,7 @@
 package com.example.demo.controllers.springMVC;
 
 import com.example.demo.entity.Product;
+import com.example.demo.model.Response;
 import com.example.demo.services.ProductService;
 import com.example.demo.utils.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -120,9 +121,9 @@ public class ProductController {
                                       Principal principal,
                                       HttpServletRequest request,
                                       RedirectAttributes rm) {
-        Product savedProduct = productService.saveOrUpdateProduct(product, principal.getName());
-        if (savedProduct != null)
-            return "redirect:/product/" + savedProduct.getProductId();
+        Response<Product> data = productService.saveOrUpdateProduct(product, principal.getName());
+        if (data.getData() != null)
+            return "redirect:/product/" + data.getData().getProductId();
         else
             return WebUtils.redirect(request, rm).orElse("/");
     }
@@ -142,9 +143,10 @@ public class ProductController {
 
     @RequestMapping("/product/delete/{id}")
     public String delete(@PathVariable Long id,
+                         @PathVariable String username,
                          HttpServletRequest request,
                          RedirectAttributes rm) {
-        String status = productService.deleteProduct(id);
+        String status = productService.deleteProduct(id, username);
         if (status.equals("Success"))
             return "redirect:/products/user";
         else

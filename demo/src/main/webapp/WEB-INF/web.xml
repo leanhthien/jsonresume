@@ -5,16 +5,6 @@
          id="WebApp_ID" version="3.0">
     <display-name>Json Resume</display-name>
 
-    <filter>
-        <filter-name>AuthenticationFilter</filter-name>
-        <filter-class>com.example.demo.utils.AuthenticationServletFilter</filter-class>
-    </filter>
-
-    <filter-mapping>
-        <filter-name>AuthenticationFilter</filter-name>
-        <url-pattern>/servlet/product/*</url-pattern>
-    </filter-mapping>
-
     <error-page>
         <error-code>404</error-code>
         <location>/404Page.jsp</location>

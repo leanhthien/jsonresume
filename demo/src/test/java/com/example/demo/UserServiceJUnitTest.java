@@ -2,9 +2,18 @@ package com.example.demo;
 
 import com.example.demo.entity.AppUser;
 import com.example.demo.entity.Token;
+import com.example.demo.model.Response;
 import com.example.demo.services.*;
 import com.example.demo.utils.EncrytedPasswordUtils;
+import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.Keys;
 import org.junit.jupiter.api.*;
+
+import javax.crypto.SecretKey;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.security.Key;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -67,6 +76,7 @@ public class UserServiceJUnitTest {
     public void createToken_fromSetToken() {
 
         AppUser appUser = userService.getUserByName("test");
+        String text = "AuJHSxcx69z4arc3kHVFzFRNXv2srf7y";
 
         Token token = userService.setToken(appUser);
 
@@ -76,11 +86,11 @@ public class UserServiceJUnitTest {
     @Test
     public void validateToken_fromValidateToken() {
 
-        String token = "AuJHSxcx69z4arc3kHVFzFRNXv2srf7y";
+        String token = "WGovbNDjd62PuUZaijs84rhCVDgGEG8A";
 
-        String status = userService.validateToken(token, 1L);
+        Response<String> response = userService.validateToken(token);
 
-        System.out.println("Status: " + status);
+        System.out.println("Status: " + response.getMessage());
     }
 
     @Test
@@ -93,7 +103,47 @@ public class UserServiceJUnitTest {
         System.out.println("Status: " + status);
     }
 
+    @Test
+    public void testGenerateKeyFromJwt() {
+        Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+        byte[] keyBytes = key.getEncoded();
 
+        String jws = Jwts.builder().setSubject("Joe").signWith(key).compact();
+
+        SecretKey secretekey = Keys.hmacShaKeyFor(keyBytes);
+
+        Jws<Claims> claim = Jwts.parser().setSigningKey(secretekey).parseClaimsJws(jws);
+
+        //OK, we can trust this JWT
+
+        String body = claim.getBody().getSubject();
+        System.out.println("Encode key: " + Arrays.toString(keyBytes));
+        System.out.println("Key: " + jws);
+        System.out.println("data: " + body);
+    }
+
+    @Test
+    public void testDescryptKeyFromJwt() {
+
+//        byte[] keyBytes = [42, -94, 102, -48, 75, -84, -98, 122, 103, 44, -1, -93, -80, 54, -47, 96, -73, -78, -8, -11, 70, -98, 97, 21, -32, 11, -69, 25, -87, -43, -53, 98];
+        String compactJws = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJKb2UifQ.s7IRre5Q7moNJM9hVYL2XhH98Y0WU36Cz_04aVtk5bQ";
+
+        try {
+
+            Jws<Claims> claim = Jwts.parser().setSigningKey("").parseClaimsJws(compactJws);
+
+            //OK, we can trust this JWT
+
+            String body = claim.getBody().getSubject();
+            System.out.println("data: " + body);
+
+        } catch (JwtException e) {
+
+            //don't trust the JWT!
+            System.out.println("Cannot parse token!");
+        }
+
+    }
 
     @AfterAll
     public static void tearDownAll() {
